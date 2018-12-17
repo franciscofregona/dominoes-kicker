@@ -2,4 +2,6 @@
 - hosts: homeServers
   roles:
      - ../roles/ansible
-     # - ../roles/virtualbox
+     - ../roles/virtualbox
+     - ../roles/vagrant
+     - ../roles/docker
