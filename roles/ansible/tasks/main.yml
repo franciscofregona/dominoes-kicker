@@ -1,0 +1,38 @@
+---
+# tasks file for ansible
+- name: Install Ansible. Prereq. Install dirmngr
+  apt:
+    name: ['dirmngr']
+    state: present
+    update_cache: yes
+    install_recommends: no
+    cache_valid_time: 3600
+  tags:
+    - prereq
+    - ansible
+  when: ansible_distribution == 'Debian' and  "ansible_distribution_version" == "9"
+
+- name: Install Ansible. Repository.
+  lineinfile:
+    path: /etc/apt/sources.list
+    state: present
+    line: "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main"
+  tags: ansible
+  when: ansible_distribution == 'Debian' and  "ansible_distribution_version" == "9"
+
+- name: Add an apt key by id from a keyserver
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 93C4A3FD7BB9C367
+  tags: ansible
+  when: ansible_distribution == 'Debian' and  "ansible_distribution_version" >= "9"
+
+- name: Install Ansible. Actual install.
+  apt:
+    name: ['ansible']
+    state: present
+    update_cache: yes
+    install_recommends: no
+    cache_valid_time: 3600
+  tags: ansible
+  when: ansible_distribution == 'Debian' and  "ansible_distribution_version" >= "9"

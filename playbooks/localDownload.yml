@@ -1,0 +1,12 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  
+  vars_files:
+    - ../mainConfig.yml
+
+  tasks:
+  - name: Download Vagrant installer
+    shell: wget {{vagrant_url}} -O ../resources/vagrant.deb
+    args:
+      creates: ../resources/vagrant.deb

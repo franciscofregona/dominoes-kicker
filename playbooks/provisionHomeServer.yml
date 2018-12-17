@@ -1,0 +1,5 @@
+---
+- hosts: homeServers
+  roles:
+     - ../roles/ansible
+     # - ../roles/virtualbox

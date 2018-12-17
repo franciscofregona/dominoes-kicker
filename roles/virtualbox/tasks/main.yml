@@ -1,0 +1,22 @@
+---
+# tasks file for virtualbox
+- name: agregando repo de virtualbox
+  apt_repository:
+    repo: deb http://download.virtualbox.org/virtualbox/debian xenial contrib
+    state: present
+
+- name: llaves de encriptacion seguridad virtualbox
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  with_items:
+    - "http://www.virtualbox.org/download/oracle_vbox_2016.asc"
+    - "http://www.virtualbox.org/download/oracle_vbox.asc"
+  # wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+  # wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
+
+- name: instalar software virtualbox
+  apt:
+    name: virtualbox-5.1 
+    state: installed
+    allow_unauthenticated: yes
