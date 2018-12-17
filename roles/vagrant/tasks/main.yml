@@ -1,0 +1,9 @@
+---
+# tasks file for vagrant
+# 
+- name: Vagrant. Actual Install
+  apt:
+    deb: /tmp/mypackage.deb
+    state: present
+    
+# 

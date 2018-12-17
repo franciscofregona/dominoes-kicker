@@ -1,0 +1,43 @@
+---
+# tasks file for docker
+- name: Install Docker. Prereqs.
+  apt:
+    name: ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg2', 'software-properties-common']
+    state: present
+    update_cache: yes
+    install_recommends: no
+    cache_valid_time: 3600
+  when: ansible_distribution == 'Debian' and  "ansible_distribution_version" >= "9"
+  # when: ansible_virtualization_role == "guest" and ansible_virtualization_type == "virtualbox"
+  tags:
+    - prereq
+    - docker
+
+- name: Install Docker. Adding repo key.
+  apt_key:
+    state: present
+    url: https://download.docker.com/linux/debian/gpg
+  tags: docker
+
+# # TODO: check the repo key against its fingerprint
+# # according to https://docs.docker.com/install/linux/docker-ce/debian/#set-up-the-repository
+# sudo apt-key fingerprint 0EBFCD88
+
+# pub   4096R/0EBFCD88 2017-02-22
+#       Key fingerprint = 9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+# uid                  Docker Release (CE deb) <docker@docker.com>
+# sub   4096R/F273FCD8 2017-02-22
+
+- apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/debian stretch stable
+    state: present
+  tags: docker
+
+- name: Install Docker. Actual Install
+  apt:
+    name: ['docker-ce']
+    update_cache: yes
+    state: present
+    # install_recommends: no
+  tags: docker
+
