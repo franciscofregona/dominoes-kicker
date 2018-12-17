@@ -1,4 +1,3 @@
 mynotes/
 resources/
 vagrant/
-!vagrant/*/Vagrantfile
