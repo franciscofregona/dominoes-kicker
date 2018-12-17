@@ -1,60 +1,22 @@
 ---
 # tasks file for virtualbox
-- name: Install VirtualBox. Prereq. Install apt-transport-https
-  apt:
-    name: ['apt-transport-https']
-    state: present
-    update_cache: yes
-    install_recommends: no
-    cache_valid_time: 3600
-  when: ansible_distribution == 'Debian' and  "ansible_distribution_version" >= "9"
-  tags:
-    - prereq
-    - virtualbox
-
-# TODO: Test if this is necesary only on my vagrant test setup or the home server actually needs it too.
-- name: Install VirtualBox. Prereq. Install kernel files for Vagrant VMS.
-  apt:
-    name: ['linux-headers-amd64', 'linux-headers-4.9.0-8-amd64', 'gcc','build-essential','perl']
-    state: present
-    update_cache: yes
-    install_recommends: no
-    cache_valid_time: 3600
-  # when: ansible_distribution == 'Debian' and  "ansible_distribution_version" >= "9" and "ansible_virtualization_type" == "virtualbox"
-  when: ansible_virtualization_role == "guest" and ansible_virtualization_type == "virtualbox"
-  tags:
-    - prereq
-    - virtualbox
-
-- name: Install VirtualBox. Adding repository.
+- name: agregando repo de virtualbox
   apt_repository:
-    repo: deb http://download.virtualbox.org/virtualbox/debian stretch contrib
+    repo: deb http://download.virtualbox.org/virtualbox/debian xenial contrib
     state: present
-  when: ansible_distribution == 'Debian' and  "ansible_distribution_version" >= "9"
-  tags: virtualbox
 
-- name: Install VirtualBox. Encryption keys for repository.
+- name: llaves de encriptacion seguridad virtualbox
   apt_key:
     url: "{{ item }}"
     state: present
   with_items:
     - "http://www.virtualbox.org/download/oracle_vbox_2016.asc"
-    # - "http://www.virtualbox.org/download/oracle_vbox.asc"
-  when: ansible_distribution == 'Debian' and  "ansible_distribution_version" >= "9"
-  tags: virtualbox
+    - "http://www.virtualbox.org/download/oracle_vbox.asc"
+  # wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+  # wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
 
-- name: Install VirtualBox. Actual install.
+- name: instalar software virtualbox
   apt:
-    name: ['virtualbox-5.2'] 
-    state: present
+    name: virtualbox-5.1 
+    state: installed
     allow_unauthenticated: yes
-    update_cache: yes
-    install_recommends: no
-  when: ansible_distribution == 'Debian' and  "ansible_distribution_version" >= "9"
-  tags: virtualbox
-
-# TODO: Test if this is necesary only on my vagrant test setup or the home server actually needs it too.
-- name: Install Virtualbox. Recompile vbox kernel module
-  shell: /sbin/vboxconfig
-  when: ansible_distribution == 'Debian' and  "ansible_distribution_version" >= "9" # and "ansible_virtualization_type" = "virtualbox"
-  tags: virtualbox

@@ -10,7 +10,7 @@
   tags:
     - prereq
     - ansible
-  when: ansible_distribution == 'Debian' and  "ansible_distribution_version" >= "9"
+  when: ansible_distribution == 'Debian' and  "ansible_distribution_version" == "9"
 
 - name: Install Ansible. Repository.
   lineinfile:
@@ -18,7 +18,7 @@
     state: present
     line: "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main"
   tags: ansible
-  when: ansible_distribution == 'Debian' and  "ansible_distribution_version" >= "9"
+  when: ansible_distribution == 'Debian' and  "ansible_distribution_version" == "9"
 
 - name: Add an apt key by id from a keyserver
   apt_key:

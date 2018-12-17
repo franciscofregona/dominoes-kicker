@@ -1,8 +1,5 @@
 ---
 - hosts: homeServers
-  gather_facts: yes
   roles:
      - ../roles/ansible
-     - ../roles/virtualbox
-     # - ../roles/vagrant
-     - ../roles/docker
+     # - ../roles/virtualbox
