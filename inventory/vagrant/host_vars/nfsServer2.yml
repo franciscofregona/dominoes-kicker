@@ -1,4 +1,15 @@
 ---
+######################################################################
+#########  Ansible connection towards the vagrant machine  ###########
+ansible_ssh_host: 127.0.0.1
+ansible_ssh_port: 2222
+ansible_become: "yes"
+#ansible_become_user: "root"
+ansible_become_method: "sudo"
+ansible_become_password: ""
+ansible_ssh_user: vagrant
+ansible_ssh_private_key_file: vagrant/nfsServer/.vagrant/machines/nfsServer2/virtualbox/private_key
+
 
 software_raid_alerts_email: "email@example.com"
 software_raid_create_kwargs: "--run" # force the creation if there are any prompts
