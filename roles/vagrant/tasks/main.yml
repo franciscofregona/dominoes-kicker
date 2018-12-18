@@ -1,0 +1,19 @@
+---
+# tasks file for vagrant
+# Vagrant deb installer should have been downloaded already by
+# the localDownload.yml playbook.
+
+- name: Vagrant. Copy the deb installer over.
+  copy:
+    src: ../resources/vagrant.deb #segun path del rol
+    dest: /tmp/vagrant.deb
+  tags:
+    - prereq
+    - vagrant
+
+- name: Vagrant. Actual Install.
+  apt:
+    deb: /tmp/vagrant.deb
+    state: present
+  tags: -vagrant
+
