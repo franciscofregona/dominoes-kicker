@@ -4,17 +4,16 @@ software_raid_alerts_email: "email@example.com"
 software_raid_create_kwargs: "--run" # force the creation if there are any prompts
 software_raid_devices:
 - device: /dev/md0
-  level: 0
+  level: 1
   components:
     - /dev/sdb
     - /dev/sdc
+  # # DO not define a mount point.
+  # # a) because its useless, since a secundary is not to be mounted and
+  # # b) because if it is defined, this role will attempt to format it.
+  # # Again, useless since DRBD needs the raw device.  
   # filesystem_type: "ext4"
-  mount_point: "/srv/data"
-  mount_options: "noatime,noexec,nodiratime,noauto"
-  dump: 0
-  passno: 0
-# - device: /dev/md1
-#   level: 1
-#   components:
-#     - /dev/sdb
-#     - /dev/sdc
+  # mount_point: "/srv/data"
+  # mount_options: "noatime,noexec,nodiratime,noauto"
+  # dump: 0
+  # passno: 0
