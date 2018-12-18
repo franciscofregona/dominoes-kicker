@@ -2,6 +2,9 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+ramSize = 512   #Memory for the VM
+cpuCount = 1    #No. of CPUs for the VM
+
 Vagrant.configure(2) do |config|
 
   # The most common configuration options are documented and commented below.
@@ -58,8 +61,9 @@ Vagrant.configure(2) do |config|
     homeServer.vm.provider "virtualbox" do |vb|
       # Display the VirtualBox GUI when booting the machine
       vb.gui = false
-       # Customize the amount of memory on the VM:
-      vb.memory = "512"
+      vb.memory = ramSize
+      vb.cpus = cpuCount
+
     end #virtualbox
   end #server
 end #config
