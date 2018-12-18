@@ -1,0 +1,4 @@
+---
+- hosts: nfsServers
+  roles:
+     - ../roles/ansible-softwareraid
