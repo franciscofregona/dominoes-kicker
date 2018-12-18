@@ -1,4 +1,5 @@
 mynotes/
 resources/
-vagrant/
 !vagrant/*/Vagrantfile
+vagrant/*/.vagrant
+vagrant/*/*.vmdk
