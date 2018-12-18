@@ -1,0 +1,13 @@
+---
+#How to use this file
+#ansible-galaxy install -r requirements.yml
+#It will download (not update? bugs!) the repos specified below.
+
+########################################################################
+#MDADM utility download and software raid configuration
+- src: https://github.com/jacoelho/ansible-softwareraid.git
+  scm: git
+  version: master
+  name: ansible-softwareraid
+
+
