@@ -3,3 +3,4 @@ resources/
 !vagrant/*/Vagrantfile
 vagrant/*/.vagrant
 vagrant/*/*.vmdk
+roles/ansible-softwareraid
