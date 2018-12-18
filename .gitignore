@@ -4,3 +4,4 @@ resources/
 vagrant/*/.vagrant
 vagrant/*/*.vmdk
 roles/ansible-softwareraid
+playbooks/*.retry
