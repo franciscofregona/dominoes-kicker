@@ -4,4 +4,3 @@
      - ../roles/ansible
      - ../roles/virtualbox
      - ../roles/vagrant
-     - ../roles/docker
