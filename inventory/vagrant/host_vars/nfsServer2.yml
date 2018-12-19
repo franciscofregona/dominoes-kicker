@@ -20,11 +20,11 @@ software_raid_devices:
     - /dev/sdb
     - /dev/sdc
   # # DO not define a mount point.
-  # # a) because its useless, since a secundary is not to be mounted and
+  # # a) because its useless, since a secondary is not to be mounted and
   # # b) because if it is defined, this role will attempt to format it.
   # # Again, useless since DRBD needs the raw device.  
   # filesystem_type: "ext4"
   # mount_point: "/srv/data"
-  # mount_options: "noatime,noexec,nodiratime,noauto"
-  # dump: 0
-  # passno: 0
+drbd_mount_options: "noatime,noexec,nodiratime,noauto"
+drbd_dump: 0
+drbd_passno: 0
