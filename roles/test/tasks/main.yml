@@ -1,0 +1,87 @@
+---
+# tasks file for test
+
+# # @role defaults
+#   test_file: 
+
+
+# el lugar por defecto para un test es especificarlo en el playbook.
+# En realidad deberia ser en el rol, pero ansible no tiene roles de roles sino playbooks de roles.
+
+# En caso de no estar definido en el playbook, se podria especificar en variable en el inventario 
+# (apuntada a un directorio de la forma)    ../inventory/{{inventory_hostname}}/tests/tests.j2
+
+# Con lo que en el rol hay que templetear el archivo ubicado en la variable 'test_file'
+
+# command line values (eg “-u user”)
+# role defaults [1]
+# inventory file or script group vars [2]
+# inventory group_vars/all [3]
+# playbook group_vars/all [3]
+# inventory group_vars/* [3]
+# playbook group_vars/* [3]
+# inventory file or script host vars [2]
+# inventory host_vars/* [3]
+# playbook host_vars/* [3]*/
+# host facts / cached set_facts [4]
+# play vars
+# play vars_prompt
+# play vars_files
+# role vars (defined in role/vars/main.yml)
+# block vars (only for tasks in block)
+# task vars (only for the task)
+# include_vars
+# set_facts / registered vars
+# role (and include_role) params
+# include params
+# extra vars (always win precedence)
+
+# Tecnicamente hay otra manera: poner los tests a nivel del rol. Si un servidor incorpora una funcionalidad, se testea la misma.
+# El problema radica en la colisión entre el valor declarativo del lenguaje de ansible y la superposicion con goss en ello: no tiene (mucho) sentido testear
+# lo que se acaba de afirmar.
+
+# lo mejor de ambos mundos seria hacer ambas cosas: el programador escribir rol tests, con una seccion de testing al final del rol (unit testing)
+# y Q&A escribir las suyas propias para el SERVICIO, que se definiran en un archivo apuntado por el playbook (acceptance testing)
+# # get goss on the server
+# # copy over the template of tests for said server
+# #   out of ../inventory/{{inventory_hostname}}/tests/tests.j2
+# # call goss on the server with the ansible script module
+
+
+# unit tests:
+# ansible:
+# ejecutar ansible --version y obtener algo. Un número de version superior a algo podría servir también.
+
+# softwareraid
+# stat el device file software_raid_devices:
+# - device: /dev/md0
+# {{ item.0.device }}
+# with_dic:
+#   - "{{software_raid_devices}}"
+# En un rol aparte: ansible-softwareraid-test
+
+# docker:
+# docker --version y obtener algo. nro de version.
+
+# drbd
+# drbd-overview mostrar una entrada para la particion.
+# TODO: mover mucho de eso a variables (nfs por ejemplo)
+
+
+# ha
+# service status corriendo, y que diga primario o secundario.
+# segun nodo?
+
+# nfs: showmounts -e muestre la particion. Solo en el primario.
+
+
+# vagrant: mismo
+
+# virtualbox: mismo.
+# ademas: "lsmod | grep -c vboxdrv" == 1
+
+
+# acceptance test:
+# poblar el servidor.
+# pegarle al nfs en la ip flotante s/entorno
+
