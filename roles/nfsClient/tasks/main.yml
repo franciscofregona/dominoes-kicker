@@ -1,0 +1,16 @@
+---
+# tasks file for nfsClient
+# 
+- name: NfsClient. Install Packages
+  apt:
+    name: ['nfs-common'] 
+    update_cache: yes
+    cache_valid_time: 3600
+    state: present
+  tags: nfsclient
+
+- name: NfsClient. Nfs share stanza in etc fstab.
+  lineinfile:
+    line: '{{nfs_float_ip}}:/srv/data/export /mnt nfs ro,defaults,noauto,noexec 0 0'
+    state: present
+    insertafter: EOF
