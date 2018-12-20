@@ -22,8 +22,8 @@
 
 - name: Add an apt key by id from a keyserver
   apt_key:
-    keyserver: keyserver.ubuntu.com
-    id: 93C4A3FD7BB9C367
+    keyserver: "{{ansible_keyserver}}"
+    id: "{{ansible_key_id}}"
   tags: ansible
   when: ansible_distribution == 'Debian' and  "ansible_distribution_version" >= "9"
 
