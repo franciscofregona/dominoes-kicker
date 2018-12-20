@@ -1,0 +1,7 @@
+[nfsServers]
+DNfsServer1
+DNfsServer2
+
+[webServers]
+DWeb1
+DWeb2

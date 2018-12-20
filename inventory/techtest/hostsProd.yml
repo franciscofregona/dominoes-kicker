@@ -1,0 +1,7 @@
+[nfsServers]
+PNfsServer1
+PNfsServer2
+
+[webServers]
+PWeb1
+PWeb2
