@@ -1,0 +1,129 @@
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+
+ramSize = 512   #Memory for the VMs (2 servers, so times 2 consumption)
+cpuCount = 1    #No. of CPUs for the VMs (again... 2 servers...)
+
+Vagrant.configure(2) do |config|
+
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+ config.vm.define "webServer1", primary: true do |webServer1|
+
+    webServer1.vm.box = "debian/stretch64"
+    # webServer1.vm.box_check_update = false
+
+    webServer1.vm.hostname = "webServer1"
+    #webServer1.vm.boot_timeout = 3600
+
+
+    # Create a forwarded port mapping which allows access to a specific port
+    # within the machine from a port on the host machine. In the example below,
+    # accessing "localhost:8080" will access port 80 on the guest machine.
+    ## ==Puerto para sftp==
+    # webServer1.vm.network "forwarded_port", guest: 69, host: 6969
+    ## ==Puerto para ssh==
+    webServer1.vm.network "forwarded_port", guest: 22, host: 2231, id: "ssh"
+
+    # Create a private network, which allows host-only access to the machine
+    # using a specific IP.
+    webServer1.vm.network "private_network", ip: "192.168.1.31", virtualbox__intnet: "ServiceNetwork"
+
+    # Create a public network, which generally matched to bridged network.
+    # Bridged networks make the machine appear as another physical host on
+    # your network.
+    # webServer1.vm.network "public_network"
+
+    # Share an additional folder to the guest VM. The first argument is
+    # the path on the host to the actual folder. The second argument is
+    # the path on the guest to mount the folder. And the optional third
+    # argument is a set of non-required options.
+    # webServer1.vm.synced_folder "../data", "/vagrant_data"
+    # webServer1.vm.synced_folder "../../Recursos/Isos/us1804", "/iso", create: true
+    
+    webServer1.ssh.forward_agent = true
+    webServer1.ssh.port=2231
+
+    # webServer1.vm.provision "ansible" do |ansible|
+    #   ansible.inventory_path = "../../inventory/vagrant/hosts.yml"
+    #   ansible.playbook = "../../playbooks/provisionwebServer1.yml"
+    #   ansible.limit = "vagrantwebServer1"
+    #   ansible.config_file = "../../ansible.cfg"
+    # end #provision
+    
+    # Provider-specific configuration so you can fine-tune various
+    # backing providers for Vagrant. These expose provider-specific options.
+    # Example for VirtualBox:
+    #
+    webServer1.vm.provider "virtualbox" do |vb|
+      # Display the VirtualBox GUI when booting the machine
+      vb.gui = false
+       # Customize the amount of memory on the VM:
+      vb.memory = ramSize
+      vb.cpus = cpuCount
+
+    end #virtualbox
+  end #webServer1
+
+  config.vm.define "webServer2", primary: true do |webServer2|
+
+    webServer2.vm.box = "debian/stretch64"
+    # webServer2.vm.box_check_update = false
+
+    webServer2.vm.hostname = "webServer2"
+    #webServer2.vm.boot_timeout = 3600
+
+
+    # Create a forwarded port mapping which allows access to a specific port
+    # within the machine from a port on the host machine. In the example below,
+    # accessing "localhost:8080" will access port 80 on the guest machine.
+    ## ==Puerto para sftp==
+    # webServer2.vm.network "forwarded_port", guest: 69, host: 6969
+    ## ==Puerto para ssh==
+    webServer2.vm.network "forwarded_port", guest: 22, host: 2232, id: "ssh"
+
+    # Create a private network, which allows host-only access to the machine
+    # using a specific IP.
+    webServer2.vm.network "private_network", ip: "192.168.1.32", virtualbox__intnet: "ServiceNetwork"
+
+
+    # Create a public network, which generally matched to bridged network.
+    # Bridged networks make the machine appear as another physical webServer2.ce on
+    # your network.
+    # webServer2.vm.network "public_network"
+
+    # Share an additional folder to the guest VM. The first argument is
+    # the path on the host to the actual folder. The second argument is
+    # the path on the guest to mount the folder. And the optional third
+    # argument is a set of non-required options.
+    # webServer2.vm.synced_folder "../data", "/vagrant_data"
+    # webServer2.vm.synced_folder "../../Recursos/Isos/us1804", "/iso", create: true
+    
+    webServer2.ssh.forward_agent = true
+    webServer2.ssh.port=2232
+
+    # webServer2.vm.provision "ansible" do |ansible|
+    #   ansible.inventory_path = "../../inventory/vagrant/hosts.yml"
+    #   ansible.playbook = "../../playbooks/provisionwebServer2.yml"
+    #   ansible.limit = "vagrantwebServer2"
+    #   ansible.config_file = "../../ansible.cfg"
+    # end #provision
+    
+    # Provider-specific configuration so you can fine-tune various
+    # backing providers for Vagrant. These expose provider-specific options.
+    # Example for VirtualBox:
+    #
+    webServer2.vm.provider "virtualbox" do |vb|
+      # Display the VirtualBox GUI when booting the machine
+      vb.gui = false
+       # Customize the amount of memory on the VM:
+      vb.memory = ramSize
+      vb.cpus = cpuCount
+    end #virtualbox
+  end #webServer2
+
+end #config
