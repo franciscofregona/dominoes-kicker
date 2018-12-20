@@ -16,7 +16,7 @@
 - name: Install Docker. Adding repo key.
   apt_key:
     state: present
-    url: https://download.docker.com/linux/debian/gpg
+    url: "{{docker_repo_key_url}}"
   tags: docker
 
 # # TODO: check the repo key against its fingerprint
@@ -29,7 +29,7 @@
 # sub   4096R/F273FCD8 2017-02-22
 
 - apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/debian stretch stable
+    repo: "{{docker_apt_repo_url}}"
     state: present
   tags: docker
 

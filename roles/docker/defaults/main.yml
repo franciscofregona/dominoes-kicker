@@ -1,0 +1,4 @@
+---
+# defaults for docker role
+docker_repo_key_url: https://download.docker.com/linux/debian/gpg
+docker_apt_repo_url: "deb [arch=amd64] https://download.docker.com/linux/debian stretch stable"
