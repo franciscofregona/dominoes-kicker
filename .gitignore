@@ -1,5 +1,5 @@
 mynotes/
-resources/
+resources/binaries
 !vagrant/*/Vagrantfile
 vagrant/*/.vagrant
 vagrant/*/*.vmdk
