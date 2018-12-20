@@ -1,0 +1,38 @@
+---
+# tasks file for ha
+# On node1, define the cluster within /etc/heartbeat/ha.cf. Example /etc/heartbeat/ha.cf:
+- name: HA. Template the HA.cf configuration file.
+  template:
+    src: ha.cf.j2
+    dest: /etc/heartbeat/ha.cf
+  tags: ha
+
+# On node1, define the authentication mechanism within /etc/heartbeat/authkeys the cluster will use. Example /etc/heartbeat/authkeys:
+# Change the permissions of /etc/heartbeat/authkeys.
+- name: HA. Copy HA auth configuration file
+  copy:
+    src: authkeys
+    dest: /etc/heartbeat/authkeys
+    mode: 0600
+  tags: ha
+
+# On node1, define the resources that will run on the cluster within /etc/heartbeat/haresources.
+# We will define the master node for the resource, the Virtual IP address, the file systems used,
+ # and the service to start.
+# Un template de Ansible
+- name: HA. Template the haresources file.
+  template:
+    src: haresources.j2
+    dest: /etc/heartbeat/haresources
+  tags: ha
+
+# Copy the cluster configuration files from node1 to node2.
+# [node1]scp /etc/heartbeat/ha.cf root @ 10.10.1.252:/etc/heartbeat/
+# [node1]scp /etc/heartbeat/authkeys root @ 10.10.1.252:/etc/heartbeat/
+# [node1]scp /etc/heartbeat/haresources root @ 10.10.1.252:/etc/heartbeat/
+
+- name: HA. Enable the heartbeat service
+  service:
+    name: heartbeat
+    enabled: yes
+  tags: ha

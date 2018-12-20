@@ -1,0 +1,11 @@
+logfacility     local0
+keepalive 200ms
+deadtime 4
+warntime 2
+initdead 20
+auto_failback off
+ucast eth2 {{primary_host}}
+ucast eth2 {{secondary_host}} 
+node {{primary_host}}
+node {{secondary_host}}
+#use_logd yes

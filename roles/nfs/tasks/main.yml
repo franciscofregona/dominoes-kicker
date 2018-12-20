@@ -1,0 +1,160 @@
+---
+# tasks file for nfs
+- name: NFS. Install packages
+  apt:
+    name: ['nfs-kernel-server'] 
+    update_cache: yes
+    cache_valid_time: 3600
+    state: present
+  tags: nfs
+
+
+########## On node1:
+# [node1]mount /dev/drbd0 /srv/data
+# Already mounted on the drbd role
+# [node1] mv /var/lib/nfs/ /srv/data/
+- name: NFS. Move NFS lock data
+  command: mv /var/lib/nfs/ /srv/data/
+  args:
+    creates: /srv/data/nfs
+    removes: /var/lib/nfs
+  when: ansible_hostname == primary_host
+  tags: nfs
+  ignore_errors: yes
+
+# TRIPLE check I didn't set it up the other way around.
+# [node1]ln -s /srv/data/nfs/ /var/lib/nfs
+- name: NFS. Link NFS lock data into the data dir.
+  file:
+    src: /srv/data/nfs/
+    dest: /var/lib/nfs
+    state: link
+  when: ansible_hostname == primary_host
+  tags: nfs
+
+#The following commands disable the nfs server service
+#from all runlevels.
+#They should work on the current Debian 9 installation
+#But it would be more Ansibley to use the service module, and so I do:
+# /usr/sbin/update-rc.d -f nfs-kernel-server remove
+# /usr/sbin/update-rc.d -f nfs-common remove
+# /usr/sbin/update-rc.d nfs-kernel-server stop 20 0 1 2 3 4 5 6 .
+# /usr/sbin/update-rc.d nfs-common  stop 20 0 1 2 3 4 5 6 .
+- name: NFS. Disable the service.
+  service:
+    name: "{{item}}"
+    enabled: no #Do not start at boot.
+    # state: stopped #Stop it right now if it is running.
+  with_items:
+    - nfs-kernel-server
+    - nfs-common
+  tags: nfs
+# [node1]mv /etc/exports /srv/data
+- name: NFS. Move NFS exports file to data dir.
+  command: mv /etc/exports /srv/data/
+  args:
+    creates: /srv/data/exports
+    removes: /etc/exports
+  when: ansible_hostname == primary_host
+  tags: nfs
+
+# TRIPLE check I didn't set it up the other way around.
+# [node1]ln -s /srv/data/exports /etc/exports
+- name: NFS. Link NFS exports file into the data dir.
+  file:
+    src: /srv/data/exports
+    dest: /etc/exports
+    state: link
+  when: ansible_hostname == primary_host
+  tags: nfs
+
+########### On node2:
+# [node2]rm -rf /var/lib/nfs
+- name: NFS. Ensure lock directory is absent.
+  file:
+    path: /var/lib/nfs
+    state: absent
+  when: ansible_hostname == secondary_host
+  tags: nfs
+
+#Missing src, so force required.
+# [node2]ln -s /srv/data/nfs/ /var/lib/nfs
+- name: NFS. Link NFS lock dir into its copy in the data dir.
+  file:
+    src: /srv/data/nfs
+    dest: /var/lib/nfs
+    state: link
+    force: yes #Probar con esto.
+  when: ansible_hostname == secondary_host
+  tags: nfs
+
+# [node2]rm /etc/exports
+- name: NFS. Ensure exports file is removed
+  file:
+    path: /etc/exports
+    state: absent
+  when: ansible_hostname == secondary_host
+  tags: nfs
+
+# [node2]ln -s /srv/data/exports /etc/exports
+# 
+- name: NFS. Link NFS exports to its copy in the data dir.
+  file:
+    path: 
+    src: /srv/data/exports
+    dest: /etc/exports
+    force: yes
+    state: link #Crea link simbolico. Requiere src y dest
+  when: ansible_hostname == secondary_host
+  tags: nfs
+
+- name: NFS. Ensure the folder for the new export exists
+  file:
+    path: /srv/data/export
+    state: directory #Crea carpetas. Requiere path
+  when: ansible_hostname == primary_host
+  tags: nfs
+
+- name: NFS. Create the entry in the exports file
+  lineinfile:
+    path: /srv/data/exports
+    line: '/srv/data/export        {{service_network}}(rw,no_subtree_check)'
+    insertafter: EOF
+    state: present
+  when: ansible_hostname == primary_host
+  tags: nfs
+
+
+
+###################HA############
+#
+# # On node1, define the cluster within /etc/heartbeat/ha.cf. Example /etc/heartbeat/ha.cf:
+# - name: HA. Template the HA.cf configuration file.
+#   template:
+#     src: ha.cf.j2
+#     dest: /etc/heartbeat/ha.cf
+#   tags: nfs
+
+# # On node1, define the authentication mechanism within /etc/heartbeat/authkeys the cluster will use. Example /etc/heartbeat/authkeys:
+# # Change the permissions of /etc/heartbeat/authkeys.
+# - name: HA. Copy HA auth configuration file
+#   copy:
+#     src: authkeys
+#     dest: /etc/heartbeat/authkeys
+#     mode: 0600
+#   tags: nfs
+
+# # On node1, define the resources that will run on the cluster within /etc/heartbeat/haresources.
+# # We will define the master node for the resource, the Virtual IP address, the file systems used,
+#  # and the service to start.
+# # Un template de Ansible
+# - name: Template
+#   template:
+#     src: haresources.j2
+#     dest: /etc/heartbeat/haresources
+#   tags: nfs
+
+# # Copy the cluster configuration files from node1 to node2.
+# # [node1]scp /etc/heartbeat/ha.cf root @ 10.10.1.252:/etc/heartbeat/
+# # [node1]scp /etc/heartbeat/authkeys root @ 10.10.1.252:/etc/heartbeat/
+# # [node1]scp /etc/heartbeat/haresources root @ 10.10.1.252:/etc/heartbeat/

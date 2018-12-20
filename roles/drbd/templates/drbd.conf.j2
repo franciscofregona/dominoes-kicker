@@ -1,0 +1,52 @@
+global {
+  usage-count no;
+}
+
+resource nfs {
+
+        protocol {{drbd_protocol}};
+        
+        handlers {
+                pri-on-incon-degr "echo o > /proc/sysrq-trigger ; halt -f";
+                pri-lost-after-sb "echo o > /proc/sysrq-trigger ; halt -f";
+                local-io-error "echo o > /proc/sysrq-trigger ; halt -f";
+                outdate-peer "/usr/lib/heartbeat/drbd-peer-outdater -t 5";      
+        }
+
+        startup {
+                degr-wfc-timeout 120;
+        }
+
+        disk {
+                on-io-error detach;
+        }
+
+        net {
+                cram-hmac-alg sha1;
+                shared-secret "password";
+                after-sb-0pri disconnect;
+                after-sb-1pri disconnect;
+                after-sb-2pri disconnect;
+                rr-conflict disconnect;
+        }
+
+        syncer {
+                rate 100M;
+                verify-alg sha1;
+                al-extents 257;
+        }
+
+        on {{primary_host}} {
+                device  /dev/drbd0;
+                disk    /dev/md0;
+                address {{primary_rep_ip}}:7788;
+                meta-disk internal;
+        }
+
+        on {{secondary_host}} {
+                device  /dev/drbd0;
+                disk    /dev/md0;
+                address {{secondary_rep_ip}}:7788;
+                meta-disk internal;
+        }
+}

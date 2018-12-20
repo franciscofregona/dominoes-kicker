@@ -1,0 +1,118 @@
+---
+# # tasks file for drbd
+# Created following (and adapting)
+# https://help.ubuntu.com/community/HighlyAvailableNFS
+
+# Ignoring bonded networking. No use for a vagrant environment.
+# If meant for production: create bond interfaces (in another rol?)
+
+- name: DRBD. Ensure hosts do not resolve to themselves via 127.0.0.1
+  lineinfile:
+    regexp: '^127\.0\.1\.1'
+    line: ''
+    path: /etc/hosts
+  tags: drbd
+
+- name: DRBD. Ensure both hosts resolve to each other
+  blockinfile:
+    block: |
+      {{ item.ip }} {{ item.name }}
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+    dest: "/etc/hosts"
+    backup: yes
+  with_items:
+    - {name: "{{primary_host}}", ip: "{{primary_rep_ip}}"}
+    - {name: "{{secondary_host}}", ip: "{{secondary_rep_ip}}"}
+    - {name: "{{primary_serv_ip}}", ip: "{{primary_host_alt}}"}
+    - {name: "{{secondary_serv_ip}}", ip: "{{secondary_host_alt}}"}
+  tags: drbd
+
+ 
+- name: DRBD. Install prereqs.
+  apt:
+    name: ['ntp', 'drbd8-utils', 'heartbeat'] 
+    update_cache: yes
+    cache_valid_time: 3600
+    state: present
+  tags: drbd
+
+
+- name: DRBD. Template the config file.
+  template:
+    src: drbd.conf.j2
+    dest: /etc/drbd.conf
+
+- name: DRBD. Change ownership of several files
+  file:
+    path: "{{item.path}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+  with_items:
+    - {path: "/sbin/drbdsetup",group: "haclient", mode: "u+s,o-x"}
+    - {path: "/sbin/drbdmeta",group: "haclient", mode: "u+s,o-x"}
+  tags: drbd
+
+
+
+- name: DRBD. Warning shows we need to run this now. Both nodes.
+  command: dpkg-statoverride --add --update root haclient 4750 /lib/drbd/drbdsetup-84
+  tags: drbd
+
+
+#TODO: "nfs" is a service name that should be put into a variable.
+- name: DRBD. Initialize the meta-data disk.
+  command: /sbin/drbdadm create-md nfs
+  tags: drbd
+
+#TODO: "nfs" is a service name that should be put into a variable.
+- name: DRBD. Enable the resource
+  command: /sbin/drbdadm up nfs
+  tags: drbd
+
+- name: DRBD. Initiate first full sync from the primary node
+  # command: drbdadm -- --overwrite-data-of-peer primary nfs
+  command: drbdadm primary --force nfs
+  when: ansible_hostname == primary_host
+  tags: drbd
+
+#Device is empty so far, lets format and mount it.
+# mkdir -p /srv/data
+# Not a problem to perform on both nodes.
+- name: DRBD. Ensure mount directory exists.
+  file:
+    path: /srv/data
+    #owner: foo
+    #group: foo
+    #mode: 0644 #Recordar el cero inicial, sino falla
+    state: directory #Crea carpetas. Requiere path
+  tags: drbd
+
+# mkfs.jfs /dev/drbd0
+# Only on the primary node
+- name: DRBD. Create a filesystem on the DRBD device.
+  filesystem:
+    fstype: ext4
+    dev: /dev/drbd0
+  when: ansible_hostname == primary_host
+  tags: drbd
+
+# mount /dev/drbd0 /srv/data
+# Only on the primary node
+- name: DRBD. Mount the device.
+  mount:
+    name: /srv/data
+    src: /dev/drbd0
+    fstype: ext4
+    opts: "{{drbd_mount_options}}"
+    dump: "{{drbd_dump}}"
+    passno: "{{drbd_passno}}"
+    state: mounted
+  when: ansible_hostname == primary_host
+  tags: drbd
+
+- name: DRBD. The secondary node still needs an entry in its fstab?
+  lineinfile:
+    line: '/dev/drbd0 /srv/data ext4 noatime,noexec,nodiratime,noauto 0 0'
+    path: /etc/fstab
+  when: ansible_hostname == secondary_host
+  tags: drbd
