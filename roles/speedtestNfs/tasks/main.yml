@@ -1,0 +1,44 @@
+
+---
+# tasks file for speedtestNfs
+- name: speedtestNfs. get the current date and time
+  shell: 'date +%Y%m%d%H%M%S'
+  register: current_run_timestamp
+  tags: speedtest
+
+- name: speedtestNfs. Test speed of access to random files
+  script:  ../resources/scripts/speedtest.sh {{current_run_timestamp.stdout}}
+  tags: speedtest
+  ## Use both nodes, fail at will.
+  ## To use only primary, uncomment.
+  when: ansible_hostname == primary_host
+  ignore_errors: yes
+
+# - name: speedtestNfs. Clear the exports dir.
+#   file:
+#     path: "{{item}}"
+#     state: absent
+#   with_items:
+#     - /srv/data/export/fiocmd.sh
+#     - /srv/data/export/test
+#   # when: ansible_hostname == primary_host
+#   tags: speedtest
+
+# # Un template de Ansible
+# - name: Template
+#   template:
+#     src: fiocmd.sh.j2
+#     dest: /srv/data/export/fiocmd.sh
+#     owner: root
+#     group: root
+#     mode: 0700
+#   # when: ansible_hostname == primary_host
+#   tags: speedtest
+
+- name: speedtestNfs. Collect results.
+  fetch:
+    src: /srv/data/export/results-{{current_run_timestamp.stdout}}
+    dest: ../testResults/
+    flat: yes
+  when: ansible_hostname == primary_host
+  tags: speedtest
