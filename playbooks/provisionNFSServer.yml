@@ -1,8 +1,6 @@
 ---
 - hosts: nfsServers
-  vars_files:
-    - ../mainConfig.yml
-  
+
   roles:
     - ../roles/ansible-softwareraid
     - ../roles/drbd
