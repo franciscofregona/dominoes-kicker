@@ -1,26 +1,6 @@
 ---
 vagrant_url: https://releases.hashicorp.com/vagrant/2.2.2/vagrant_2.2.2_x86_64.deb
 
-#NFS Part of the solution.
-#Hostnames of the servers
-primary_host: nfsServer1
-secondary_host: nfsServer2
-
-#Hostnames (alternative, same servers)
-primary_host_alt: nfsServer1-private
-secondary_host_alt: nfsServer2-private
-
-#replication addresses
-primary_rep_ip: 192.168.33.20
-secondary_rep_ip: 192.168.33.21
-
 #(NFS) service addresses
-primary_serv_ip: 192.168.1.1
-secondary_serv_ip: 192.168.1.2
 nfs_float_ip: 192.168.1.3
 service_network: 192.168.1.0/24
-
-drbd_protocol: C
-# A: Asynchronous replication
-# B: Memory synchronous (semi-synchronous)
-# C: Synchronous replication protocol.

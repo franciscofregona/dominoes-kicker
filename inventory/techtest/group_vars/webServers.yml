@@ -1,0 +1,22 @@
+---
+
+#WEB Part of the solution.
+#Hostnames of the servers
+primary_host: WebServer1
+secondary_host: WebServer2
+
+# #Hostnames (alternative, same servers)
+# primary_host_alt: WebServer1-private
+# secondary_host_alt: WebServer2-private
+
+#replication addresses
+primary_rep_ip: 192.168.33.32
+secondary_rep_ip: 192.168.33.32
+
+#(Web) service addresses
+primary_serv_ip: 192.168.1.31
+secondary_serv_ip: 192.168.1.32
+
+# Moved to all.yml
+# Web_float_ip: 192.168.1.33
+# service_network: 192.168.1.0/24
