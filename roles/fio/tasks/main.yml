@@ -1,0 +1,11 @@
+---
+# tasks file for fio
+# Instalar paquetes de 
+- name: Fio. Install package
+  apt:
+    name: ['fio'] 
+    update_cache: yes
+    cache_valid_time: 3600
+    state: present
+  tags: fio
+
