@@ -93,6 +93,7 @@
   filesystem:
     fstype: ext4
     dev: /dev/drbd0
+    opts: -N 500000
   when: ansible_hostname == primary_host
   tags: drbd
 
