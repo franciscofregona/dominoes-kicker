@@ -25,6 +25,6 @@ software_raid_devices:
   # # Again, useless since DRBD needs the raw device.  
   # filesystem_type: "ext4"
   # mount_point: "/srv/data"
-drbd_mount_options: "noatime,noexec,nodiratime,noauto"
+drbd_mount_options: "noatime,nodiratime,noauto"
 drbd_dump: 0
 drbd_passno: 0
