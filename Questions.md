@@ -68,9 +68,6 @@ The one I've read and used in a small task before is **Consul**. Other examples 
 * __Scalability__: Storage units are an implementation of Hardware RAID that scale into the hundreds of disks. Software RAIDs won't (shouldn't) exceed the enclosure of the server that hosts them.
 * __Reliability__: Hardware RAID controllers that carry a cache memory include batteries to guarantee data consistency in case of a power failure. Software based RAIDs must rely on the filesystem's tools for that kind of reliability (a function Hardware RAIDs will also use, too)
 
-
-If the application demands the performance or added reliability, (or the cost is of no issue), -**a Hardware-based RAID is the only way to go.**-
-
 ## 7) In a Perfect World, how should hardware resource management look like for you in modern DevOps Culture working environment?
 
 I understand this question as in asking how the hardware the company owns will be managed after the DevOps revolution.
