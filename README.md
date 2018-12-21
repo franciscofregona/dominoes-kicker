@@ -1,11 +1,6 @@
 Technical Test
 =========
 
-
-subtitles
-
-Please write down responses for the following questions:
-
 1) What is the difference between Virtual Machines and Containers?
 ------------
 
@@ -24,14 +19,14 @@ Lastly: containers should be considered inherently less secure than virtual mach
 2) For which purpose would you decide to use a virtual machine instead of a container?
 ------------
 
-I'd decide to use a VM instead of a container to be able to:
+I'd choose to use a VM instead of a container to be able to:
 1. fully customize the operative system and hardware that will run an application,
-2. better constrain an ill-behaving application by means of sizing of memory, disk and number of cpus,
+2. better constrain an ill-behaving application by means of sizing of memory, disk and number of CPUs,
 3. test an application that is later to be deployed on bare-metal (using application in the broadest of meanings),
 4. keep running legacy applications, Virtualizing (P2V) them out of obsolete hardware, legacy operating systems, without support or in need of isolation,
 5. run applications developed in a monolithic paradigm (vs a micro-service paradigm, more suitable for containers). I'm not sure but the size of service (ie: databases) might set a case against containers as well,
 6. running third-party applications, wired to be run as appliances (VM) and not to be as trusted as in-house developed ones.
-7. Finally: While containers are being improved every-day, they are not yet as mature and proven as VMs are. Thus: in certain busines environments and loads, mission critical applications are better of in VMs.
+7. Finally: While containers are being improved every-day, they are not yet as mature and proven as VMs are. Thus: in certain business environments and loads, mission critical applications are better of in VMs.
 
 
 3) Which would be benefits of running containers systems like Docker or LXC?
@@ -39,10 +34,10 @@ I'd decide to use a VM instead of a container to be able to:
 
 Docker, have not read much about LXC yet) provide tools that:
 
-1. ease the development of services with multiple parts, providing a separation between them (ie: separate containers for frontend, backend, db...),
+1. ease the development of services with multiple parts, providing a separation between them (ie: separate containers for frontend, back-end, db...),
 2. connectivity for those parts, in the form of software defined networks and port redirections
 3. support for different versions of the dependencies of each part, by the means of the encapsulation provided,
-4. less errors arise from differences in configuration between the development (the programmer's pc!), testing and production environments. Every container comes with its dependencies.
+4. less errors arise from differences in configuration between the development (the programmer's PC!), testing and production environments. Every container comes with its dependencies.
 5. ease of deployment (by load balancing or switching those software defined networks) allowing blue-green or canary schemes,
 
 
@@ -60,7 +55,7 @@ The other big limitation of containers is graphical interfaces. Containers are s
 
 HAProxy (and probably Nginx and LVS too) will allow to load balance among servers that have close to no configuration to that task in them. That is: the load balancing specific configuration is concentrated in the load balancer. But adding servers behind it imply that that configuration must change.
 
-Load balancing can be made by leveraging service-discovery services.
+Another approach would be by leveraging service-discovery services.
 
 Once set-up and running, new services that are created on demand get registered in the service discovery server's inner database and allow clients to query it for other services they need.
 
@@ -73,51 +68,29 @@ Principle: Both have the same principle guiding them: splitting data among multi
 Technology: Hardware-based RAID systems work through a raid controller device, where disks attach to. Software RAIDs need nothing more than a regular disk controller device (included in most computers today) and special software (included or easily installed on most Linuxes)
 Performance: Hardware > Software, specially in more complicated configurations. On simpler configurations (RAID 0, 1), the performance hit can be negligible. Hardware controllers can have cache memories that greatly improve small to medium loads performances, both on write and on read.
 Cost: RAID Controllers can be QUITE expensive. And if faster drives are used, that cost skyrockets. Software based RAIDS don't cost that much, and usually are designed to use (or have to make by with) commodity disks.
-Scalability: Storage units are an implementation of Hardware RAID that scale into the hundreds of disks. Software RAIDs won't (should'nt) exceed the enclosure of the server that hosts them.
+Scalability: Storage units are an implementation of Hardware RAID that scale into the hundreds of disks. Software RAIDs won't (shouldn't) exceed the enclosure of the server that hosts them.
 Reliability: Hardware RAID controllers that carry a cache memory include batteries to guarantee data consistency in case of a power failure. Software based RAIDs must rely on the filesystem's tools for that kind of reliability (a function Hardware RAIDs will also use, too)
 
 If the application demands the performance or added reliability, (or the cost is of no issue), a Hardware-based RAID is the only way to go.
 
 7) In a Perfect World, how should hardware resource management look like for you in modern DevOps Culture working environment?
 ------------
+I understand this question as in asking how the hardware the company owns will be managed after the DevOps revolution.
+
+In a Perfect World, "friends don't let friends build Datacenters."
+
+In the current DevOps Culture and dynamic demands of computing power and storage, a sane and rational use of the cloud providers is the way to go. The easiest management is the one that somebody else does for you.
+
+Now, in a more real world, one where the GDPR exists, the scenario is different.
+The next best thing is, IMO, to leverage software tools to automate everything that can be automated. And then some more.
+The cost on the human resources is higher. The alternative is to out-source which, again, not feasible on some cases.
+
 
 8) What does automation and Infrastructure as Code mean to you?
 ------------
+
+
+
  Please construct your answer as a list of topics, listing concepts, possible applications, advantages, and tooling.
  
 Optional: add a quick explanation how the tooling mentioned would work on a real system
-
-
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
-
-Role Variables
---------------
-
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
-
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
