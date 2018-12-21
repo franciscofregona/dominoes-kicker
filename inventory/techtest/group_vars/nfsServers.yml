@@ -24,3 +24,5 @@ drbd_protocol: C
 # A: Asynchronous replication
 # B: Memory synchronous (semi-synchronous)
 # C: Synchronous replication protocol.
+
+resources_template: nfsServersharesources.j2
