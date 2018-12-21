@@ -68,6 +68,7 @@ The one I've read and used in a small task before is **Consul**. Other examples 
 ###### Scalability: Storage units are an implementation of Hardware RAID that scale into the hundreds of disks. Software RAIDs won't (shouldn't) exceed the enclosure of the server that hosts them.
 ###### Reliability: Hardware RAID controllers that carry a cache memory include batteries to guarantee data consistency in case of a power failure. Software based RAIDs must rely on the filesystem's tools for that kind of reliability (a function Hardware RAIDs will also use, too)
 
+
 If the application demands the performance or added reliability, (or the cost is of no issue), a Hardware-based RAID is the only way to go.
 
 ## 7) In a Perfect World, how should hardware resource management look like for you in modern DevOps Culture working environment?
@@ -83,7 +84,8 @@ The next best thing is, IMO, to leverage software tools to automate everything t
 The cost on the human resources is higher. The alternative is to out-source which, again, not feasible on some cases.
 
 
-###### 8) What does automation and Infrastructure as Code mean to you?
+
+## 8) What does automation and Infrastructure as Code mean to you?
 
 Please construct your answer as a list of topics, listing concepts, possible applications, advantages, and tooling.
 
