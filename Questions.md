@@ -61,14 +61,15 @@ The one I've read and used in a small task before is **Consul**. Other examples 
 
 ## 6) Please explain the difference between a software-based RAID system and a hardware-based RAID system. Is one better than the other? If so, why?
 
-###### Principle: Both have the same principle guiding them: splitting data among multiple disks to provide reliability, security and sometimes speed.
-###### Technology: Hardware-based RAID systems work through a raid controller device, where disks attach to. Software RAIDs need nothing more than a regular disk controller device (included in most computers today) and special software (included or easily installed on most Linuxes)
-###### Performance: Hardware > Software, specially in more complicated configurations. On simpler configurations (RAID 0, 1), the performance hit can be negligible. Hardware controllers can have cache memories that greatly improve small to medium loads performances, both on write and on read.
-###### Cost: RAID Controllers can be QUITE expensive. And if faster drives are used, that cost skyrockets. Software based RAIDS don't cost that much, and usually are designed to use (or have to make by with) commodity disks.
-###### Scalability: Storage units are an implementation of Hardware RAID that scale into the hundreds of disks. Software RAIDs won't (shouldn't) exceed the enclosure of the server that hosts them.
-###### Reliability: Hardware RAID controllers that carry a cache memory include batteries to guarantee data consistency in case of a power failure. Software based RAIDs must rely on the filesystem's tools for that kind of reliability (a function Hardware RAIDs will also use, too)
+* __Principle__: Both have the same principle guiding them: splitting data among multiple disks to provide reliability, security and sometimes speed.
+* __Technology__: Hardware-based RAID systems work through a raid controller device, where disks attach to. Software RAIDs need nothing more than a regular disk controller device (included in most computers today) and special software (included or easily installed on most Linuxes)
+* __Performance__: Hardware > Software, specially in more complicated configurations. On simpler configurations (RAID 0, 1), the performance hit can be negligible. Hardware controllers can have cache memories that greatly improve small to medium loads performances, both on write and on read.
+* __Cost__: RAID Controllers can be QUITE expensive. And if faster drives are used, that cost skyrockets. Software based RAIDS don't cost that much, and usually are designed to use (or have to make by with) commodity disks.
+* __Scalability__: Storage units are an implementation of Hardware RAID that scale into the hundreds of disks. Software RAIDs won't (shouldn't) exceed the enclosure of the server that hosts them.
+* __Reliability__: Hardware RAID controllers that carry a cache memory include batteries to guarantee data consistency in case of a power failure. Software based RAIDs must rely on the filesystem's tools for that kind of reliability (a function Hardware RAIDs will also use, too)
 
-If the application demands the performance or added reliability, (or the cost is of no issue), a Hardware-based RAID is the only way to go.
+
+If the application demands the performance or added reliability, (or the cost is of no issue), -**a Hardware-based RAID is the only way to go.**-
 
 ## 7) In a Perfect World, how should hardware resource management look like for you in modern DevOps Culture working environment?
 
@@ -83,7 +84,8 @@ The next best thing is, IMO, to leverage software tools to automate everything t
 The cost on the human resources is higher. The alternative is to out-source which, again, not feasible on some cases.
 
 
-###### 8) What does automation and Infrastructure as Code mean to you?
+
+## 8) What does automation and Infrastructure as Code mean to you?
 
 Please construct your answer as a list of topics, listing concepts, possible applications, advantages, and tooling.
 
