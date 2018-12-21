@@ -1,38 +1,51 @@
-Role Name
+DRBD
 =========
 
-A brief description of the role goes here.
+Created following (and adapting) https://help.ubuntu.com/community/HighlyAvailableNFS
+
+* Ignoring bonded networking. No use for a vagrant environment.
+* If meant for production: create bond interfaces (in another rol?)
+
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Hosts involved in the DRBD array must be able to resolve with each other. The role _hosts_ is used for that.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+The following variables must be defined, there are no defaults configured.
 
-Dependencies
-------------
+Hostnames of the parties involved:
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+* primary_host
+* secondary_host
+
+* drbd_protocol (A|B|C)
+
+Options for the DRBD created filesystem
+
+* drbd_mount_options
+* drbd_dump
+* drbd_passno
+
+TODO
+----
+
+Create variables for the drbd device file (/dev/drbd0) and the filesystem device file (/dev/md0 in our example) where the drbd partition will land.
+
+Create variables for behavior, ports and performance present in the template that lands on  the drbd.conf file.
+
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
+         - { role: drbd }
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Francisco Fregona

@@ -1,11 +1,5 @@
 ---
-# # tasks file for drbd
-# Created following (and adapting)
-# https://help.ubuntu.com/community/HighlyAvailableNFS
-
-# Ignoring bonded networking. No use for a vagrant environment.
-# If meant for production: create bond interfaces (in another rol?)
-
+# tasks file for drbd
 - name: DRBD. Install prereqs.
   apt:
     name: ['ntp', 'drbd8-utils'] 
