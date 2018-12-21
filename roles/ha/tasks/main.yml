@@ -1,5 +1,13 @@
 ---
 # tasks file for ha
+- name: HA. Install Heartbeat service.
+  apt:
+    name: ['heartbeat'] 
+    update_cache: yes
+    cache_valid_time: 3600
+    state: present
+  tags: ha
+
 # On node1, define the cluster within /etc/heartbeat/ha.cf. Example /etc/heartbeat/ha.cf:
 - name: HA. Template the HA.cf configuration file.
   template:
@@ -22,7 +30,7 @@
 # Un template de Ansible
 - name: HA. Template the haresources file.
   template:
-    src: haresources.j2
+    src: "{{inventory_dir}}/group_files/{{resources_template}}"
     dest: /etc/heartbeat/haresources
   tags: ha
 
