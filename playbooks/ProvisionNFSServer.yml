@@ -3,6 +3,7 @@
   gather_facts: yes
 
   roles:
+    - ../roles/hosts
     - ../roles/ansible-softwareraid
     - ../roles/drbd
     - ../roles/nfs

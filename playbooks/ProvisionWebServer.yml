@@ -3,9 +3,10 @@
   gather_facts: yes
 
   roles:
+    - ../roles/hosts
     - ../roles/nfsClient
-    - ../roles/docker
     - ../roles/ha
+    - ../roles/docker
     # - ../roles/fio
     # - ../roles/speedtestWeb
 
