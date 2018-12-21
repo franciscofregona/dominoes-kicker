@@ -1,0 +1,21 @@
+---
+- hosts: webServers
+  gather_facts: yes
+
+  roles:
+    - ../roles/nfsClient
+    - ../roles/docker
+    - ../roles/ha
+    # - ../roles/fio
+    # - ../roles/speedtestWeb
+
+  # tasks:
+    # - name: SpeedTest. Generate files on the nodes. OK TO FAIL.
+    #   script: ../resources/scripts/filegenerator.sh
+    #   tags: speedtest
+    #   ## Use both nodes, fail at will.
+    #   ## To use only primary, uncomment.
+    #   # when: ansible_hostname == primary_host
+    #   ignore_errors: yes
+
+
