@@ -41,3 +41,10 @@
     # install_recommends: no 
   tags: docker
 
+# - name: Docker. Template the dockerfile for the service.
+#   template:
+#     src: dockerfile.j2
+#     dest: /srv/dockerfile
+
+# - name: Docker. Run the service
+#   docker:
