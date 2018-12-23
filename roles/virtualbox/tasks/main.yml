@@ -26,13 +26,6 @@
     - prereq
     - virtualbox
 
-- name: Install VirtualBox. Adding repository.
-  apt_repository:
-    repo: deb http://download.virtualbox.org/virtualbox/debian stretch contrib
-    state: present
-  when: ansible_distribution == 'Debian' and  "ansible_distribution_version" >= "9"
-  tags: virtualbox
-
 - name: Install VirtualBox. Encryption keys for repository.
   apt_key:
     url: "{{ item }}"
@@ -40,6 +33,13 @@
   with_items:
     - "http://www.virtualbox.org/download/oracle_vbox_2016.asc"
     # - "http://www.virtualbox.org/download/oracle_vbox.asc"
+  when: ansible_distribution == 'Debian' and  "ansible_distribution_version" >= "9"
+  tags: virtualbox
+
+- name: Install VirtualBox. Adding repository.
+  apt_repository:
+    repo: deb http://download.virtualbox.org/virtualbox/debian stretch contrib
+    state: present
   when: ansible_distribution == 'Debian' and  "ansible_distribution_version" >= "9"
   tags: virtualbox
 
