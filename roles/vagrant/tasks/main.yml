@@ -5,7 +5,7 @@
 
 - name: Vagrant. Copy the deb installer over.
   copy:
-    src: ../resources/vagrant.deb #segun path del rol
+    src: ../resources/binaries/vagrant.deb #segun path del rol
     dest: /tmp/vagrant.deb
   tags:
     - prereq
@@ -15,5 +15,5 @@
   apt:
     deb: /tmp/vagrant.deb
     state: present
-  tags: -vagrant
+  tags: vagrant
 
