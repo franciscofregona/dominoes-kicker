@@ -44,7 +44,8 @@ cd dominoes-kicker
 Set up the control host with
 
 ```bash
-ansible-playbook playbooks/ProvisionHomeServer.yml -i inventory/homeserver/hostsProd.yml
+ansible-playbook playbooks/localDownload.yml
+ansible-playbook playbooks/ProvisionHomeServer.yml -i inventory/homeserver/hostsProd.yml -l PHomeServer -K
 ```
 
 Deploy the nfs servers
