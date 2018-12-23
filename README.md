@@ -12,6 +12,19 @@ separation of code and values (variables). Ingredients
 ## Automate even the control host
 Since I'm developing from a PC to a host you provided, I automated the configuration of that too.
 
+The host can be "pinged" to check for connectivity (in the Ansible way of pinging) either with
+
+```bash
+ansible PHomeServer -i inventory/homeserver/hostsProd.yml -K
+```
+
+(Using the public IP to access the host. The "-K" flag asks for the sudo password of the account)
+or using
+
+```bash
+ansible HomeServerPLocal -i inventory/homeserver/hostsProd.yml -K
+```
+
 # Summary of operations
 Get the latest version of this repo:
 

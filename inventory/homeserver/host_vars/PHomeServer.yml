@@ -1,0 +1,8 @@
+---
+##########################################################################
+#########  Ansible connection towards the home server machine  ###########
+ansible_ssh_host: dstest
+ansible_become: "yes"
+ansible_become_method: "sudo"
+ansible_ssh_user: admin
+ansible_ssh_private_key_file: sshkeys/frankDSprivate.openssh.ppk
