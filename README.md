@@ -18,12 +18,14 @@ The host can be "pinged" to check for connectivity (in the Ansible way of pingin
 ansible PHomeServer -i inventory/homeserver/hostsProd.yml -K
 ```
 
-(Using the public IP to access the host. The "-K" flag asks for the sudo password of the account)
+(Using the public IP to access the host, either from within itself or from outside of the machine. The "-K" flag asks for the sudo password of the account)
 or using
 
 ```bash
 ansible HomeServerPLocal -i inventory/homeserver/hostsProd.yml -K
 ```
+
+which will hit on the localhost address.
 
 # Summary of operations
 Get the latest version of this repo:
