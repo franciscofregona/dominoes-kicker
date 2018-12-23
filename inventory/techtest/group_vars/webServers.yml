@@ -17,8 +17,4 @@ secondary_rep_ip: 192.168.33.32
 primary_serv_ip: 192.168.1.31
 secondary_serv_ip: 192.168.1.32
 
-# Moved to all.yml
-# web_float_ip: 192.168.1.33
-# service_network: 192.168.1.0/24
-
 resources_template: webServersharesources.j2
