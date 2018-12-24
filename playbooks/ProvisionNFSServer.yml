@@ -5,9 +5,9 @@
   roles:
     - ../roles/hosts
     - ../roles/ansible-softwareraid
+    - ../roles/ha
     - ../roles/drbd
     - ../roles/nfs
-    - ../roles/ha
     - ../roles/fio
     # - ../roles/speedtestNfs
 

@@ -1,5 +1,6 @@
 ---
 vagrant_url: https://releases.hashicorp.com/vagrant/2.2.2/vagrant_2.2.2_x86_64.deb
+goss_version: v0.3.6
 
 #(NFS) service addresses
 nfs_float_ip: 192.168.1.4

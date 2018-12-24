@@ -7,6 +7,13 @@
 
   tasks:
   - name: Download Vagrant installer
-    shell: wget {{vagrant_url}} -O ../resources/vagrant.deb
+    shell: wget {{vagrant_url}} -O ../resources/binaries/vagrant.deb
     args:
-      creates: ../resources/vagrant.deb
+      creates: ../resources/binaries/vagrant.deb
+
+
+  - name: Download GOSS system checker
+    shell: wget https://github.com/aelsabbahy/goss/releases/download/{{goss_version}}/goss-linux-amd64 -O ../resources/binaries/goss
+    args:
+      creates: ../resources/binaries/goss
+
