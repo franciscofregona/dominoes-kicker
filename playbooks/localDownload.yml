@@ -6,6 +6,12 @@
     - ../mainConfig.yml
 
   tasks:
+
+  - name: create directories for downloadables
+    file:
+      path: ../resources/binaries
+      state: directory #Crea carpetas. Requiere path
+  
   - name: Download Vagrant installer
     shell: wget {{vagrant_url}} -O ../resources/binaries/vagrant.deb
     args:
