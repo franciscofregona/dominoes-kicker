@@ -19,14 +19,14 @@ Further configurations to the control host can be made either way: remotely (fro
 The host can be "pinged" to check for connectivity (in the Ansible way of pinging) then, either with
 
 ```bash
-ansible PHomeServer -i inventory/homeserver/hostsProd.yml -K
+ansible PHomeServer -m ping -i inventory/homeserver/hostsProd.yml -K
 ```
 
 (Using the public IP to access the host, either from within itself or from outside of the machine. The "-K" flag asks for the sudo password of the account)
 or using
 
 ```bash
-ansible HomeServerPLocal -i inventory/homeserver/hostsProd.yml -K
+ansible HomeServerPLocal -m ping -i inventory/homeserver/hostsProd.yml -K
 ```
 
 which will hit on the localhost address.
