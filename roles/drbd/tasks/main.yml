@@ -83,9 +83,9 @@
   when: ansible_hostname == primary_host
   tags: drbd
 
-- name: DRBD. The secondary node still needs an entry in its fstab?
-  lineinfile:
-    line: '/dev/drbd0 /srv/data ext4 noatime,noexec,nodiratime,noauto 0 0'
-    path: /etc/fstab
-  when: ansible_hostname == secondary_host
-  tags: drbd
+# - name: DRBD. The secondary node still needs an entry in its fstab?
+#   lineinfile:
+#     line: '/dev/drbd0 /srv/data ext4 noatime,noexec,nodiratime,noauto 0 0'
+#     path: /etc/fstab
+#   when: ansible_hostname == secondary_host
+#   tags: drbd
