@@ -30,7 +30,7 @@
 - name: Install Ansible. Actual install.
   apt:
     name: ['ansible']
-    state: present
+    state: latest
     update_cache: yes
     install_recommends: no
     cache_valid_time: 3600
