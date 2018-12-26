@@ -42,6 +42,6 @@
 - name: HA. Enable the heartbeat service
   service:
     name: heartbeat
-    state: started
+    state: restarted
     enabled: yes
   tags: ha
