@@ -17,6 +17,6 @@
   with_items:
     - {name: "{{primary_host}}", ip: "{{primary_rep_ip}}"}
     - {name: "{{secondary_host}}", ip: "{{secondary_rep_ip}}"}
-    - {name: "{{primary_serv_ip}}", ip: "{{primary_host_alt}}"}
-    - {name: "{{secondary_serv_ip}}", ip: "{{secondary_host_alt}}"}
+    - {name: "{{primary_host_alt}}", ip: "{{primary_serv_ip}}"}
+    - {name: "{{secondary_host_alt}}", ip: "{{secondary_serv_ip}}"}
   tags: hosts
