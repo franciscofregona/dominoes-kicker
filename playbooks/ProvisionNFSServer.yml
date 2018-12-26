@@ -8,8 +8,10 @@
     - ../roles/ha
     - ../roles/drbd
     - ../roles/nfs
+    - ../roles/cleanupandfix
     - ../roles/fio
     # - ../roles/speedtestNfs
+    - ../roles/goss
 
   # tasks:
     # - name: SpeedTest. Generate files on the nodes. OK TO FAIL.

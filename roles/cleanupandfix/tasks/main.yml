@@ -1,0 +1,10 @@
+---
+# tasks file for cleanupandfix
+
+- name: FIX. Restart the heartbeat service on the secundary
+  service:
+    name: heartbeat
+    state: restarted
+    enabled: yes
+  when: ansible_hostname == secondary_host
+  tags: fix
