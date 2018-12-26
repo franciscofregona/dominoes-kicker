@@ -52,6 +52,7 @@ Set up the control host with
 
 ```bash
 ansible-playbook playbooks/localDownload.yml
+ansible-galaxy install -r requirements.yml
 ansible-playbook playbooks/ProvisionHomeServer.yml -i inventory/homeserver/hostsProd.yml -l PHomeServer -K
 ```
 
