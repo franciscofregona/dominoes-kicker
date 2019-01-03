@@ -14,6 +14,8 @@
     src: drbd.conf.j2
     dest: /etc/drbd.conf
 
+#Ignore errors: this must run after HA is installed.
+#TODO: add a when clause to take this into account.
 - name: DRBD. Change ownership of several files
   file:
     path: "{{item.path}}"
@@ -23,12 +25,13 @@
     - {path: "/sbin/drbdsetup",group: "haclient", mode: "u+s,o-x"}
     - {path: "/sbin/drbdmeta",group: "haclient", mode: "u+s,o-x"}
   tags: drbd
-
+  ignore_errors: yes
 
 
 - name: DRBD. Warning shows we need to run this now. Both nodes.
   command: dpkg-statoverride --add --update root haclient 4750 /lib/drbd/drbdsetup-84
   tags: drbd
+  ignore_errors: yes
 
 
 #TODO: "nfs" is a service name that should be put into a variable.

@@ -1,0 +1,64 @@
+#!/bin/bash
+#
+# This script is inteded to be used as resource script by heartbeat
+#
+# Francisco Fregona. 2019. franciscofregona@gmail.com
+# Contains some code (scaffolding mostly) from linbit's original drbddisk resource.
+###
+
+## EXIT CODES
+# since this is a "legacy heartbeat R1 resource agent" script,
+# exit codes actually do not matter that much as long as we conform to
+#  http://wiki.linux-ha.org/HeartbeatResourceAgent
+# but it does not hurt to conform to lsb init-script exit codes,
+# where we can.
+#  http://refspecs.linux-foundation.org/LSB_3.1.0/LSB-Core-generic/LSB-Core-generic/iniscrptact.html
+#
+####
+
+
+#Todo: this will not test for a specific share but put them all down or up.
+if [ "$#" -eq 1 ]; then
+  CMD="$1" #ie: start or stop or status
+ else
+  exit 2 #wrong number of parameters
+fi
+
+EXPORTFS="/usr/sbin/exportfs"
+
+case "$CMD" in
+    start)
+	# try several times, in case heartbeat deadtime
+	# was smaller than drbd ping time
+	try=3
+	while true; do
+		$EXPORTFS -ra && break
+		let "--try" || exit 1 # LSB generic error
+		sleep 1
+	done
+	;;
+    stop)
+	# heartbeat (haresources mode) will retry failed stop
+	# for a number of times in addition to this internal retry.
+	try=3
+	while true; do
+		$EXPORTFS -ua && break
+		let --try || exit 1 # LSB generic error
+		sleep 1
+	done
+	;;
+    status)
+	try=3
+	NOMOUNTS=$( exportfs -s 2>/dev/null | wc -l )
+	if [ "$NOMOUNTS" -gt 0 ]; then
+	    exit 0
+	fi
+	exit 1
+	;;
+    *)
+	echo "Usage: exportffs {start|stop|status}"
+	exit 2
+	;;
+esac
+
+exit 0

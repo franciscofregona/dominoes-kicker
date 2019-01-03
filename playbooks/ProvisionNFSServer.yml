@@ -5,12 +5,12 @@
   roles:
     - ../roles/hosts
     - ../roles/ansible-softwareraid
-    - ../roles/ha
     - ../roles/drbd
     - ../roles/nfs
-    - ../roles/cleanupandfix
+    - ../roles/ha
+    # not needed finally, it was a matter of order of operations. - ../roles/cleanupandfix
     - ../roles/fio
-    # - ../roles/speedtestNfs
+    # # - ../roles/speedtestNfs
     - ../roles/goss
 
   # tasks:

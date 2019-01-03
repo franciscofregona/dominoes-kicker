@@ -8,14 +8,37 @@
     state: present
   tags: ha
 
-# On node1, define the cluster within /etc/heartbeat/ha.cf. Example /etc/heartbeat/ha.cf:
+#Ignore errors: this must run after drbd is installed.
+#TODO: add a when stanza to take this into account.
+- name: DRBD. Change ownership of several files
+  file:
+    path: "{{item.path}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+  with_items:
+    - {path: "/sbin/drbdsetup",group: "haclient", mode: "u+s,o-x"}
+    - {path: "/sbin/drbdmeta",group: "haclient", mode: "u+s,o-x"}
+  tags: ha
+  ignore_errors: yes
+
+- name: DRBD. Warning shows we need to run this now. Both nodes.
+  command: dpkg-statoverride --add --update root haclient 4750 /lib/drbd/drbdsetup-84
+  tags: ha
+  ignore_errors: yes
+
+- name: DRBD. Warning shows we need to run this now. Both nodes.
+  command: dpkg-statoverride --add --update root haclient 4750 /sbin/drbdmeta
+  tags: ha
+  ignore_errors: yes
+
+# define the cluster within /etc/heartbeat/ha.cf. Example /etc/heartbeat/ha.cf:
 - name: HA. Template the HA.cf configuration file.
   template:
     src: ha.cf.j2
     dest: /etc/heartbeat/ha.cf
   tags: ha
 
-# On node1, define the authentication mechanism within /etc/heartbeat/authkeys the cluster will use. Example /etc/heartbeat/authkeys:
+# define the authentication mechanism within /etc/heartbeat/authkeys the cluster will use. Example /etc/heartbeat/authkeys:
 # Change the permissions of /etc/heartbeat/authkeys.
 - name: HA. Copy HA auth configuration file
   copy:
@@ -24,7 +47,7 @@
     mode: 0600
   tags: ha
 
-# On node1, define the resources that will run on the cluster within /etc/heartbeat/haresources.
+# define the resources that will run on the cluster within /etc/heartbeat/haresources.
 # We will define the master node for the resource, the Virtual IP address, the file systems used,
  # and the service to start.
 # Un template de Ansible
@@ -34,11 +57,20 @@
     dest: /etc/heartbeat/haresources
   tags: ha
 
-# Copy the cluster configuration files from node1 to node2.
 # [node1]scp /etc/heartbeat/ha.cf root @ 10.10.1.252:/etc/heartbeat/
 # [node1]scp /etc/heartbeat/authkeys root @ 10.10.1.252:/etc/heartbeat/
 # [node1]scp /etc/heartbeat/haresources root @ 10.10.1.252:/etc/heartbeat/
 
+# Get our new exportfs resource.d to the hosts    
+- name: HA. Copy the exportffs script
+  copy:
+    src: exportffs #segun path del rol
+    dest: /etc/heartbeat/resource.d/exportffs
+    owner: root
+    group: root
+    mode: 0755
+  tags: ha
+  
 - name: HA. Enable the heartbeat service
   service:
     name: heartbeat

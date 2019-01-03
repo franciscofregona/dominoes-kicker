@@ -8,6 +8,24 @@
     state: present
   tags: nfs
 
+#The following commands disable the nfs server service
+#from all runlevels.
+#They should work on the current Debian 9 installation
+#But it would be more Ansibley to use the service module, and so I do:
+# /usr/sbin/update-rc.d -f nfs-kernel-server remove
+# /usr/sbin/update-rc.d -f nfs-common remove
+# /usr/sbin/update-rc.d nfs-kernel-server stop 20 0 1 2 3 4 5 6 .
+# /usr/sbin/update-rc.d nfs-common  stop 20 0 1 2 3 4 5 6 .
+- name: NFS. Disable the service.
+  service:
+    name: "{{item}}"
+    # enabled: no #Do not start at boot.
+    state: stopped #Stop it right now if it is running.
+  with_items:
+    - nfs-kernel-server
+    - nfs-common
+  when: ansible_hostname == primary_host
+  tags: nfs
 
 ########## On node1:
 # [node1]mount /dev/drbd0 /srv/data
@@ -32,23 +50,7 @@
   when: ansible_hostname == primary_host
   tags: nfs
 
-#The following commands disable the nfs server service
-#from all runlevels.
-#They should work on the current Debian 9 installation
-#But it would be more Ansibley to use the service module, and so I do:
-# /usr/sbin/update-rc.d -f nfs-kernel-server remove
-# /usr/sbin/update-rc.d -f nfs-common remove
-# /usr/sbin/update-rc.d nfs-kernel-server stop 20 0 1 2 3 4 5 6 .
-# /usr/sbin/update-rc.d nfs-common  stop 20 0 1 2 3 4 5 6 .
-- name: NFS. Disable the service.
-  service:
-    name: "{{item}}"
-    enabled: no #Do not start at boot.
-    # state: stopped #Stop it right now if it is running.
-  with_items:
-    - nfs-kernel-server
-    - nfs-common
-  tags: nfs
+
 # [node1]mv /etc/exports /srv/data
 - name: NFS. Move NFS exports file to data dir.
   command: mv /etc/exports /srv/data/
@@ -84,7 +86,7 @@
     src: /srv/data/nfs
     dest: /var/lib/nfs
     state: link
-    force: yes #Probar con esto.
+    force: yes
   when: ansible_hostname == secondary_host
   tags: nfs
 
@@ -97,7 +99,6 @@
   tags: nfs
 
 # [node2]ln -s /srv/data/exports /etc/exports
-# 
 - name: NFS. Link NFS exports to its copy in the data dir.
   file:
     path: 
@@ -118,8 +119,19 @@
 - name: NFS. Create the entry in the exports file
   lineinfile:
     path: /srv/data/exports
-    line: '/srv/data/export        {{service_network}}(rw,no_subtree_check)'
+    line: '/srv/data/export        {{service_network}}(rw,fsid=1,no_subtree_check)'
     insertafter: EOF
     state: present
+  when: ansible_hostname == primary_host
+  tags: nfs
+
+- name: NFS. Enable the service.
+  service:
+    name: "{{item}}"
+    enabled: yes #Do not start at boot.
+    state: started
+  with_items:
+    - nfs-kernel-server
+  #  - nfs-common
   when: ansible_hostname == primary_host
   tags: nfs
