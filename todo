@@ -1,0 +1,38 @@
+# todo:
+
+* TODO: HA's haresources would'nt detect downed services and autoswitch. Migrate to Pacemaker.
+* TODO: WEB docker monitor for HA: It will be nice to actually take care of the service also
+* TEST: When bringing up the nfs servers from sleep and are already provisioned, they reach a stalemate.
+* TODO: NFS: use the goss module to perform the tests.
+* TODO: WEB: Make the Tests for the web servers. And test them.
+* TODO: Register the exits of the tests and output them (both NFS and WEB servers)
+* TODO: HA: make a script that tests status of the HA service on the host quickly without that much typing.
+* TODO: Docker probably will be running as root...? This should be changed for prod.
+* TODO: Performance on web servers. Change volume for to a bind mount as per https://docs.docker.com/storage/volumes/
+* TODO: NFS Test play must delete the directory before populating or running tests.
+* TODO: NFS Fill play too must delete the contents of the directory.
+* TODO: It'be nice to check beforehand too.
+* TODO: Add the ansible-galaxy install command to the localdownload Play.
+* TODO: DOC: resources are mostly mounted up by HA.
+* TODO: Delete tests directories from roles if are not going to be used.
+* TODO: Study the (nice!) make and Makefile structure of the ansible-softwareraid role.
+* TODO: Vagrant: web servers: Add a production network.
+* TODO: VAGRANT: NFS change NIC type.
+* TODO: If NFS HA keeps failing, check for a quorum device in host for guests to share with.
+* DONE: ~~~INVESTIGATE AND TEST: should the installation of the HA service go last? All tests seem to point that way.~~~ Playbooks updated.
+* DONE: ~~~ADD: service name and IP to /etc/hosts file on both services to easier check if online.~~~
+* DONE: ~~~Add goss /testing role and tests.~~~
+* DONE: ~~~service heartbeat enable y start~~~
+* NOT NEEDED ANY MORE. ~~~Make a stalemate breaker playbook (the fixes playbook already does this)~~~
+
+# benchmark
+https://www.slashroot.in/linux-file-system-read-write-performance-test
+https://www.binarylane.com.au/support/solutions/articles/1000055889-how-to-benchmark-disk-i-o
+http://www.monitis.com/blog/how-to-improve-server-performance-by-io-tuning-part-2/
+https://docs.docker.com/storage/volumes/
+
++ Mem for VM (hopefully to host the entire disk on RAM)
++ disks. Won't test, not much sense since everything is in the same disk.
+
+Reading: https://wiki.mikejung.biz/Software_RAID
+
