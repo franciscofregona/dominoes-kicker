@@ -20,16 +20,21 @@
     - {path: "/sbin/drbdmeta",group: "haclient", mode: "u+s,o-x"}
   tags: ha
   ignore_errors: yes
+  when: inventory_hostname in groups.nfsServers
 
 - name: DRBD. Warning shows we need to run this now. Both nodes.
   command: dpkg-statoverride --add --update root haclient 4750 /lib/drbd/drbdsetup-84
   tags: ha
   ignore_errors: yes
+  when: inventory_hostname in groups.nfsServers
+
 
 - name: DRBD. Warning shows we need to run this now. Both nodes.
   command: dpkg-statoverride --add --update root haclient 4750 /sbin/drbdmeta
   tags: ha
   ignore_errors: yes
+  when: inventory_hostname in groups.nfsServers
+
 
 # define the cluster within /etc/heartbeat/ha.cf. Example /etc/heartbeat/ha.cf:
 - name: HA. Template the HA.cf configuration file.
@@ -69,7 +74,21 @@
     owner: root
     group: root
     mode: 0755
+  when: inventory_hostname in groups.nfsServers
   tags: ha
+
+#And our docker monitor too
+- name: HA. Template the dockermon script
+  template:
+    src: dockermon.j2
+    dest: /etc/heartbeat/resource.d/dockermon
+    owner: root
+    group: root
+    mode: 0755
+  when: inventory_hostname in groups.webServers
+  tags:
+    - ha
+    - script
   
 - name: HA. Enable the heartbeat service
   service:

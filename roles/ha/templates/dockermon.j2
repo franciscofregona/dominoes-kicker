@@ -1,0 +1,85 @@
+#!/bin/bash
+#
+# This script is inteded to be used as resource script by heartbeat
+#
+# Francisco Fregona. 2019. franciscofregona@gmail.com
+# Contains some code (scaffolding mostly) from linbit's original drbddisk resource.
+#
+# This script monitors the status of a docker container, starts it or stops it over HA's will.
+# It will assume the docker service is running.
+# If it is not, it will fail over to the other host, per HA's own design.
+# TODO: IT will be nice to actually take care of the service also
+###
+
+## EXIT CODES
+# since this is a "legacy heartbeat R1 resource agent" script,
+# exit codes actually do not matter that much as long as we conform to
+#  http://wiki.linux-ha.org/HeartbeatResourceAgent
+# but it does not hurt to conform to lsb init-script exit codes,
+# where we can.
+#  http://refspecs.linux-foundation.org/LSB_3.1.0/LSB-Core-generic/LSB-Core-generic/iniscrptact.html
+#
+####
+
+
+#Todo: this will not test for a specific container but put them all down or up.
+if [ "$#" -eq 1 ]; then
+  CMD="$1" #ie: start or stop or status
+ else
+  exit 2 #wrong number of parameters
+fi
+
+RUNCMD="/usr/bin/docker run -d  -p 8080:80 --restart always --name {{container_name}} -v /mnt:/usr/local/apache2/htdocs simplewebserver:0.99"
+STOPCMD="/usr/bin/docker rm -f {{container_name}}"
+
+#Is there a running container with the name specified?
+#No use for testing different values. Docker wont allow multiple containers with the same name running.
+
+STATUSCMD=$( /usr/bin/docker ps -a | grep {{container_name}} -c )
+STATUS=$STATUSCMD
+
+
+case "$CMD" in
+    start)
+	if [ "$STATUS" -gt 0 ]; then
+		#Already running
+	    exit 0
+	fi
+
+	# heartbeat (haresources mode) will retry failed start
+	# for a number of times in addition to this internal retry.
+	try=3
+	while true; do
+		$RUNCMD && break
+		let --try || exit 1 # LSB generic error
+		sleep 1
+	done
+	;;
+    stop)
+	# heartbeat (haresources mode) will retry failed stop
+	# for a number of times in addition to this internal retry.
+	STATUS=$STATUSCMD
+	if [ "$STATUS" -eq 0 ]; then
+		#Already stopped
+	    exit 0
+	fi
+	try=3
+	while true; do
+		$STOPCMD && break		
+		let --try || exit 1 # LSB generic error
+		sleep 1
+	done
+	;;
+    status)
+	if [ "$STATUS" -gt 0 ]; then
+	    exit 0
+	fi
+	exit 1
+	;;
+    *)
+	echo "Usage: dockermon {start|stop|status}"
+	exit 2
+	;;
+esac
+
+exit 0

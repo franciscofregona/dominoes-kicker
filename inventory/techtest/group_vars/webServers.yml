@@ -10,7 +10,7 @@ primary_host_alt: webServer1-private
 secondary_host_alt: webServer2-private
 
 #replication addresses
-primary_rep_ip: 192.168.33.32
+primary_rep_ip: 192.168.33.31
 secondary_rep_ip: 192.168.33.32
 
 #(Web) service addresses
@@ -18,3 +18,4 @@ primary_serv_ip: 192.168.1.31
 secondary_serv_ip: 192.168.1.32
 
 resources_template: webServersharesources.j2
+container_name: simplewebservercontainer

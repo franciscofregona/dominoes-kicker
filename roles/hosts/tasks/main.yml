@@ -19,4 +19,6 @@
     - {name: "{{secondary_host}}", ip: "{{secondary_rep_ip}}"}
     - {name: "{{primary_host_alt}}", ip: "{{primary_serv_ip}}"}
     - {name: "{{secondary_host_alt}}", ip: "{{secondary_serv_ip}}"}
+    - {name: "nfs", ip: "{{nfs_float_ip}}"}
+    - {name: "web", ip: "{{web_float_ip}}"}
   tags: hosts

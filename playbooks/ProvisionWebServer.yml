@@ -5,8 +5,9 @@
   roles:
     - ../roles/hosts
     - ../roles/nfsClient
-    - ../roles/ha
+    - ../roles/pip
     - ../roles/docker
+    - ../roles/ha
     # - ../roles/fio
     # - ../roles/speedtestWeb
 

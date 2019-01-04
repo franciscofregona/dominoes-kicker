@@ -1,6 +1,6 @@
 ---
 # tasks file for docker
-- name: Install Docker. Prereqs.
+- name: Docker.  Prereqs.
   apt:
     name: ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg2', 'software-properties-common']
     state: present
@@ -13,7 +13,7 @@
     - prereq
     - docker
 
-- name: Install Docker. Adding repo key.
+- name: Docker. Add repo key.
   apt_key:
     state: present
     url: "{{docker_repo_key_url}}"
@@ -28,12 +28,13 @@
 # uid                  Docker Release (CE deb) <docker@docker.com>
 # sub   4096R/F273FCD8 2017-02-22
 
-- apt_repository:
+- name: Docker. Add the Docker repo
+  apt_repository:
     repo: "{{docker_apt_repo_url}}"
     state: present
   tags: docker
 
-- name: Install Docker. Actual Install
+- name: Docker. Install Docker. Actual Install
   apt:
     name: ['docker-ce']
     update_cache: yes
@@ -41,10 +42,43 @@
     # install_recommends: no 
   tags: docker
 
-# - name: Docker. Template the dockerfile for the service.
-#   template:
-#     src: dockerfile.j2
-#     dest: /srv/dockerfile
+- name: Docker. Install Docker bindings for Python (ansible module dependence)
+  pip:
+    name: docker
+  tags: docker
+  
+- name: Docker. Copy the dockerfile for the service. Unused
+  copy:
+    src: Dockerfile
+    dest: /srv/Dockerfile
+  tags: docker
 
-# - name: Docker. Run the service
-#   docker:
+# Equivalent docker command would have been something along the lines of
+# docker build -t simplewebserver:0.99 /srv
+- name: Docker. Make an image with that dockerfile
+  docker_image:
+    path: /srv/
+    name: simplewebserver
+    state: present
+    tag: 0.99
+    # buildargs:
+    #   listen_port: 8080
+    #   log_volume: /var/log/myapp
+  tags: docker
+
+# Equivalent docker command will be
+# docker run -d  -p 8080:80 --restart always -v /mnt:/usr/local/apache2/htdocs simplewebserver:0.99
+- name: Docker. Run the container for the webserver
+  docker_container:
+    name: "{{container_name}}"
+    image: simplewebserver:0.99
+    volumes:
+      - /srv:/usr/local/apache2/htdocs/:ro
+    state: started
+    restart: yes
+    restart_policy: always
+    ports:
+     - "8080:80"  #TODO: Check order of ports
+  tags: docker
+
+
