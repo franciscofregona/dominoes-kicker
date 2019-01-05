@@ -24,9 +24,7 @@ I chose linux-ha's heartbeat because I used quite some time ago with decent resu
 
 For the sake of simplicity (and out of memory of previous experiences) I stood by the *haresources* method of configuration (the other being by the use of Pacemaker). This simplicity comes at a price: the *heartbeat* would not detect if the service components are up and running. If I make some time and finish other tasks, I'll migrate it to a Pacemaker solution.
 
-On the file server backend, again, DRBD has treated me well in simple setups.
-
-Both tools gave me a headache but I managed to stabilize them up to what I'd deem as stable.
+On the file server backend, again, DRBD has treated me well in simple setups. But both tools gave me a headache but I managed to stabilize them up to what I'd deem as stable.
 
 The other downside of using the haresources method is that in its simplicity and lack of features, some things would not work or do so badly:
 
