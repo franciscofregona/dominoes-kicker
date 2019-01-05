@@ -68,7 +68,7 @@
   filesystem:
     fstype: ext4
     dev: /dev/drbd0
-    opts: -N 500000
+    opts: -N 500000 #Number of i-nodes on the partition.
   when: ansible_hostname == primary_host
   tags: drbd
 
@@ -85,10 +85,3 @@
     state: mounted
   when: ansible_hostname == primary_host
   tags: drbd
-
-# - name: DRBD. The secondary node still needs an entry in its fstab?
-#   lineinfile:
-#     line: '/dev/drbd0 /srv/data ext4 noatime,noexec,nodiratime,noauto 0 0'
-#     path: /etc/fstab
-#   when: ansible_hostname == secondary_host
-#   tags: drbd
