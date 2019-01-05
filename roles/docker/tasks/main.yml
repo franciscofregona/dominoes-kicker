@@ -73,7 +73,7 @@
     name: "{{container_name}}"
     image: simplewebserver:0.99
     volumes:
-      - /srv:/usr/local/apache2/htdocs/:ro
+      - /mnt:/usr/local/apache2/htdocs/:ro
     state: started
     restart: yes
     restart_policy: always

@@ -29,7 +29,7 @@ if [ "$#" -eq 1 ]; then
   exit 2 #wrong number of parameters
 fi
 
-RUNCMD="/usr/bin/docker run -d  -p 8080:80 --restart always --name {{container_name}} -v /mnt:/usr/local/apache2/htdocs simplewebserver:0.99"
+RUNCMD="/usr/bin/docker run -d  -p 8080:80 --restart always --name {{container_name}} -v /mnt/export:/usr/local/apache2/htdocs simplewebserver:0.99"
 STOPCMD="/usr/bin/docker rm -f {{container_name}}"
 
 #Is there a running container with the name specified?
