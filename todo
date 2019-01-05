@@ -1,9 +1,9 @@
 # todo:
 
+* TODO: Give a final pass to the roles documentation (I added some things since writing those).
+* TODO: Install extra tools on the servers.
 * TODO: HA's haresources would'nt detect downed services and autoswitch. Migrate to Pacemaker.
-* TODO: WEB docker monitor for HA: It will be nice to actually take care of the service also
 * TEST: When bringing up the nfs servers from sleep and are already provisioned, they reach a stalemate.
-* TODO: NFS: use the goss module to perform the tests.
 * TODO: WEB: Make the Tests for the web servers. And test them.
 * TODO: Register the exits of the tests and output them (both NFS and WEB servers)
 * TODO: HA: make a script that tests status of the HA service on the host quickly without that much typing.
@@ -17,13 +17,15 @@
 * TODO: Delete tests directories from roles if are not going to be used.
 * TODO: Study the (nice!) make and Makefile structure of the ansible-softwareraid role.
 * TODO: Vagrant: web servers: Add a production network.
-* TODO: VAGRANT: NFS change NIC type.
-* TODO: If NFS HA keeps failing, check for a quorum device in host for guests to share with.
-* DONE: ~~~INVESTIGATE AND TEST: should the installation of the HA service go last? All tests seem to point that way.~~~ Playbooks updated.
-* DONE: ~~~ADD: service name and IP to /etc/hosts file on both services to easier check if online.~~~
-* DONE: ~~~Add goss /testing role and tests.~~~
-* DONE: ~~~service heartbeat enable y start~~~
-* NOT NEEDED ANY MORE. ~~~Make a stalemate breaker playbook (the fixes playbook already does this)~~~
+* WONT FIX: ~~TODO: VAGRANT: NFS change NIC type.~~ [Not a problem](https://github.com/hashicorp/vagrant/issues/10481#issuecomment-445074331).
+* WONT FIX: ~~TODO: If NFS HA keeps failing, check for a quorum device in host for guests to share with.~~ (Unless Pacemaker requires it)
+* DONE: ~~WEB docker monitor for HA: It will be nice to actually take care of the service also~~. Made **dockermon**
+* DONE: ~~NFS: use the goss module to perform the tests.~~
+* DONE: ~~INVESTIGATE AND TEST: should the installation of the HA service go last? All tests seem to point that way.~~ Playbooks updated.
+* DONE: ~~ADD: service name and IP to /etc/hosts file on both services to easier check if online.~~
+* DONE: ~~Add goss /testing role and tests.~~
+* DONE: ~~service heartbeat enable y start~~
+* NOT NEEDED ANY MORE. ~~Make a stalemate breaker playbook (fixed the playbook)~~
 
 # benchmark
 https://www.slashroot.in/linux-file-system-read-write-performance-test
