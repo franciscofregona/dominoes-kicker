@@ -22,5 +22,7 @@ drbd_protocol: C
 # B: Memory synchronous (semi-synchronous)
 # C: Synchronous replication protocol.
 
+#HA
 resources_template: nfsServersharesources.j2
-goss_template: nfsGossTests.yml.j2
+#GOSS
+#goss_template: nfsGossTests.yml.j2 -->moved to tests per hosts.

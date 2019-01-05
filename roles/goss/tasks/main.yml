@@ -1,5 +1,6 @@
 ---
 # tasks file for goss
+
 - name: Goss. Copy the deb installer over.
   copy:
     src: ../resources/binaries/goss
@@ -9,12 +10,17 @@
     mode: u+rx
   tags: goss
 
-
-#     
 - name: Goss. Copy goss.yaml file to the host
   template:
     src: "{{inventory_dir}}/group_files/{{goss_template}}"
     dest: /etc/mygoss.yaml
-  tags: goss
+  tags: 
+    - goss
+    - test
 
-
+- name: Goss. Run the tests
+  goss:
+    path: /etc/mygoss.yaml
+  tags:
+    - goss
+    - test
