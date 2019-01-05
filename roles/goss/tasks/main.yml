@@ -5,8 +5,8 @@
   copy:
     src: ../resources/binaries/goss
     dest: /usr/local/bin/goss
-    # owner: root
-    # group: root
+    owner: root
+    group: root
     mode: u+rx
   tags: goss
 
