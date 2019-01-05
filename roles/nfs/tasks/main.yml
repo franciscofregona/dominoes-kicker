@@ -83,7 +83,7 @@
 # [node2]ln -s /srv/data/nfs/ /var/lib/nfs
 - name: NFS. Link NFS lock dir into its copy in the data dir.
   file:
-    src: /srv/data/nfs
+    src: /srv/data/nfs/
     dest: /var/lib/nfs
     state: link
     force: yes
