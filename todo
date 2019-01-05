@@ -1,9 +1,10 @@
 # todo:
 
+* TODO: not using vagrants sync folders. See if I can disable it.
 * TODO: Give a final pass to the roles documentation (I added some things since writing those).
 * TODO: Install extra tools on the servers.
 * TODO: HA's haresources would'nt detect downed services and autoswitch. Migrate to Pacemaker.
-* TEST: When bringing up the nfs servers from sleep and are already provisioned, they reach a stalemate.
+* TEST: When bringing up the nfs servers from sleep and are already provisioned, do they still reach a stalemate?
 * TODO: WEB: Make the Tests for the web servers. And test them.
 * TODO: Register the exits of the tests and output them (both NFS and WEB servers)
 * TODO: HA: make a script that tests status of the HA service on the host quickly without that much typing.
