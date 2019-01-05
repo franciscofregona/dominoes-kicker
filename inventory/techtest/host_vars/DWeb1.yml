@@ -12,3 +12,6 @@ ansible_ssh_private_key_file: vagrant/webServers/.vagrant/machines/webServer1/vi
 
 
 webserver_redirected_port: 8081
+
+#GOSS
+goss_template: web1GossTests.yml.j2

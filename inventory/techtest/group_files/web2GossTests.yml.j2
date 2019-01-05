@@ -1,0 +1,120 @@
+file:
+  /etc/heartbeat/authkeys:
+    exists: true
+    mode: "0600"
+    size: 21
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /etc/heartbeat/ha.cf:
+    exists: true
+    mode: "0644"
+    size: 181
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /etc/heartbeat/haresources:
+    exists: true
+    mode: "0644"
+    size: 98
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /etc/heartbeat/resource.d/dockermon:
+    exists: true
+    mode: "0755"
+    size: 2328
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+service:
+  heartbeat:
+    enabled: true
+    running: true
+command:
+  docker images | grep httpd | grep 2.4 -c:
+    exit-status: 0
+    stdout:
+    - "1"
+    stderr: []
+    timeout: 10000
+  docker images | grep simplewebserver -c:
+    exit-status: 0
+    stdout:
+    - "1"
+    stderr: []
+    timeout: 10000
+  docker ps -a | grep simplewebservercontainer | grep Up -c:
+    exit-status: 0
+    stdout:
+    - "1"
+    stderr: []
+    timeout: 10000
+package:
+  apt-transport-https:
+    installed: true
+    versions:
+    - 1.4.8
+  ca-certificates:
+    installed: true
+    versions:
+    - 20161130+nmu1+deb9u1
+  curl:
+    installed: true
+    versions:
+    - 7.52.1-5+deb9u8
+  gnupg2:
+    installed: true
+    versions:
+    - 2.1.18-8~deb9u3
+  nfs-common:
+    installed: true
+    versions:
+    - 1:1.3.4-2.1
+  python-pip:
+    installed: true
+    versions:
+    - 9.0.1-2
+  python-setuptools:
+    installed: true
+    versions:
+    - 33.1.1-1
+  software-properties-common:
+    installed: true
+    versions:
+    - 0.96.20.2-1
+dns:
+  {{primary_host}}:
+    resolvable: true
+    addrs:
+    - {{primary_rep_ip}}
+    timeout: 500
+  {{primary_host_alt}}:
+    resolvable: true
+    addrs:
+    - {{primary_serv_ip}}
+    timeout: 500
+  {{secondary_host}}:
+    resolvable: true
+    addrs:
+    - {{secondary_rep_ip}}
+    timeout: 500
+  {{secondary_host_alt}}:
+    resolvable: true
+    addrs:
+    - {{secondary_serv_ip}}
+    timeout: 500
+  nfs:
+    resolvable: true
+    addrs:
+    - {{nfs_float_ip}}
+    timeout: 500
+  web:
+    resolvable: true
+    addrs:
+    - {{web_float_ip}}
+    timeout: 500

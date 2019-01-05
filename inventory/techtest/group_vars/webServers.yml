@@ -20,4 +20,3 @@ secondary_serv_ip: 192.168.1.32
 resources_template: webServersharesources.j2
 container_name: simplewebservercontainer
 
-goss_template: webGossTests.yml.j2
