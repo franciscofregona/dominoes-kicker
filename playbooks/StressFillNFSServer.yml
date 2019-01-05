@@ -2,14 +2,6 @@
 - hosts: nfsServers
   gather_facts: yes
 
-  # roles:
-    # - ../roles/ansible-softwareraid
-    # - ../roles/drbd
-    # - ../roles/nfs
-    # - ../roles/ha
-    # - ../roles/fio
-    # - ../roles/speedtestNfs
-
   tasks:
     - name: Generate files on the nodes. OK TO FAIL.
       script: ../resources/scripts/stressFileGenerator.sh
