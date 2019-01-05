@@ -28,3 +28,6 @@ software_raid_devices:
 drbd_mount_options: "noatime,nodiratime,noauto"
 drbd_dump: 0
 drbd_passno: 0
+
+#Goss
+goss_template: nfs1GossTests.yml.j2

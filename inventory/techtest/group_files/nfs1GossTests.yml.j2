@@ -51,11 +51,43 @@ file:
   /etc/heartbeat/haresources:
     exists: true
     mode: "0644"
-    size: 121
+    size: 120
     owner: root
     group: root
     filetype: file
     contains: []
+  /etc/ha.d/resource.d/exportffs:
+    exists: true
+    mode: "0755"
+    size: 1496
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /etc/hosts:
+    exists: true
+    mode: "0644"
+    size: 799
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /sbin/drbdmeta:
+    exists: true
+    mode: "4750"
+    size: 118280
+    owner: root
+    group: haclient
+    filetype: file
+    contains: []
+  /sbin/drbdsetup:
+    exists: true
+    mode: "4754"
+    size: 160864
+    owner: root
+    group: haclient
+    filetype: file
+    contains: [] 
   /srv/data:
     exists: true
     mode: "0755"
@@ -75,7 +107,7 @@ file:
   /srv/data/exports:
     exists: true
     mode: "0644"
-    size: 449
+    size: 456
     owner: root
     group: root
     filetype: file
@@ -97,8 +129,8 @@ service:
     enabled: false
     running: false
   nfs-kernel-server:
-    enabled: false
-    # running: true
+    enabled: true
+    running: true
 command:
   ping {{nfs_float_ip}} -c 1 | grep '1 received' -c:
     exit-status: 0
@@ -127,6 +159,16 @@ dns:
     addrs:
     - {{secondary_serv_ip}}
     timeout: 500
+  nfs:
+    resolvable: true
+    addrs:
+    - {{nfs_float_ip}}
+    timeout: 500
+  web:
+    resolvable: true
+    addrs:
+    - {{web_float_ip}}
+    timeout: 500
 mount:
   /srv/data:
     exists: true
@@ -136,4 +178,6 @@ mount:
     - nodiratime
     source: /dev/drbd0
     filesystem: ext4
+
+
 

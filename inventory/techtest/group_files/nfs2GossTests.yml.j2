@@ -1,0 +1,147 @@
+file:
+  /dev/drbd0:
+    exists: true
+    mode: "0660"
+    size: 0
+    owner: root
+    group: disk
+    filetype: block-device
+    contains: []
+  /dev/md0:
+    exists: true
+    mode: "0660"
+    size: 0
+    owner: root
+    group: disk
+    filetype: block-device
+    contains: []
+  /etc/drbd.conf:
+    exists: true
+    mode: "0644"
+    size: 1299
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /etc/exports:
+    exists: true
+    mode: "0777"
+    size: 17
+    owner: root
+    group: root
+    linked-to: /srv/data/exports
+    filetype: symlink
+    contains: []
+  /etc/heartbeat/authkeys:
+    exists: true
+    mode: "0600"
+    size: 21
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /etc/heartbeat/ha.cf:
+    exists: true
+    mode: "0644"
+    size: 181
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /etc/heartbeat/haresources:
+    exists: true
+    mode: "0644"
+    size: 120
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /etc/ha.d/resource.d/exportffs:
+    exists: true
+    mode: "0755"
+    size: 1496
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /etc/hosts:
+    exists: true
+    mode: "0644"
+    size: 799
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /sbin/drbdmeta:
+    exists: true
+    mode: "4750"
+    size: 118280
+    owner: root
+    group: haclient
+    filetype: file
+    contains: []
+  /sbin/drbdsetup:
+    exists: true
+    mode: "4754"
+    size: 160864
+    owner: root
+    group: haclient
+    filetype: file
+    contains: [] 
+  /var/lib/nfs:
+    exists: true
+    mode: "0777"
+    size: 14
+    owner: root
+    group: root
+    linked-to: /srv/data/nfs/
+    filetype: symlink
+    contains: []
+service:
+  heartbeat:
+    enabled: true
+    running: true
+  nfs-common:
+    enabled: false
+    running: false
+  nfs-kernel-server:
+    enabled: true
+    running: true
+command:
+  ping {{nfs_float_ip}} -c 1 | grep '1 received' -c:
+    exit-status: 0
+    stdout:
+    - "1"
+    stderr: []
+    timeout: 10000
+dns:
+  {{primary_host}}:
+    resolvable: true
+    addrs:
+    - {{primary_rep_ip}}
+    timeout: 500
+  {{primary_host_alt}}:
+    resolvable: true
+    addrs:
+    - {{primary_serv_ip}}
+    timeout: 500
+  {{secondary_host}}:
+    resolvable: true
+    addrs:
+    - {{secondary_rep_ip}}
+    timeout: 500
+  {{secondary_host_alt}}:
+    resolvable: true
+    addrs:
+    - {{secondary_serv_ip}}
+    timeout: 500
+  nfs:
+    resolvable: true
+    addrs:
+    - {{nfs_float_ip}}
+    timeout: 500
+  web:
+    resolvable: true
+    addrs:
+    - {{web_float_ip}}
+    timeout: 500
