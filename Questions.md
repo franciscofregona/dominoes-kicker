@@ -18,25 +18,24 @@ Lastly: containers should be considered inherently less secure than virtual mach
 ## 2) For which purpose would you decide to use a virtual machine instead of a container?
 
 I'd choose to use a VM instead of a container to be able to:
+
 1. fully customize the operative system and hardware that will run an application,
 2. better constrain an ill-behaving application by means of sizing of memory, disk and number of CPUs,
 3. test an application that is later to be deployed on bare-metal (using application in the broadest of meanings),
 4. keep running legacy applications, Virtualizing (P2V) them out of obsolete hardware, legacy operating systems, without support or in need of isolation,
 5. run applications developed in a monolithic paradigm (vs a micro-service paradigm, more suitable for containers). I'm not sure but the size of service (ie: databases) might set a case against containers as well,
 6. running third-party applications, wired to be run as appliances (VM) and not to be as trusted as in-house developed ones.
-7. Finally: While containers are being improved every-day, they are not yet as mature and proven as VMs are. Thus: in certain business environments and loads, mission critical applications are better of in VMs.
-
+7. Finally: While containers are being improved every-day, they are not yet as mature and proven as VMs are. Thus: in certain business environments and loads, mission critical applications are better off in VMs.
 
 ## 3) Which would be benefits of running containers systems like Docker or LXC?
 
-Docker, have not read much about LXC yet) provide tools that:
+Docker, (I have not read much about LXC yet) provide tools that:
 
 1. ease the development of services with multiple parts, providing a separation between them (ie: separate containers for frontend, back-end, db...),
 2. connectivity for those parts, in the form of software defined networks and port redirections
 3. support for different versions of the dependencies of each part, by the means of the encapsulation provided,
 4. less errors arise from differences in configuration between the development (the programmer's PC!), testing and production environments. Every container comes with its dependencies.
 5. ease of deployment (by load balancing or switching those software defined networks) allowing blue-green or canary schemes,
-
 
 ## 4) Which limitations does a container have on a Linux-based host system?
 
@@ -47,7 +46,6 @@ On an individual scope, you are still exposing an application that shares a kern
 On a collective scope: what used to be a single VM on the server farm can now be (probably is) tens or hundreds of containers. Monitoring and auditing a dynamic, moving object gets only worse the more of them you have. Again: technologies exists to ease this task, but they must be on point.
 
 The other big limitation of containers is graphical interfaces. Containers are simply not designed to support them.
-
 
 ## 5) Would you be able to mention at least one software solution for load-balancing that supports dynamic load-balancing with mostly zero-conf? How would it work?
 
@@ -61,12 +59,23 @@ The one I've read and used in a small task before is **Consul**. Other examples 
 
 ## 6) Please explain the difference between a software-based RAID system and a hardware-based RAID system. Is one better than the other? If so, why?
 
-* __Principle__: Both have the same principle guiding them: splitting data among multiple disks to provide reliability, security and sometimes speed.
-* __Technology__: Hardware-based RAID systems work through a raid controller device, where disks attach to. Software RAIDs need nothing more than a regular disk controller device (included in most computers today) and special software (included or easily installed on most Linuxes)
-* __Performance__: Hardware > Software, specially in more complicated configurations. On simpler configurations (RAID 0, 1), the performance hit can be negligible. Hardware controllers can have cache memories that greatly improve small to medium loads performances, both on write and on read.
-* __Cost__: RAID Controllers can be QUITE expensive. And if faster drives are used, that cost skyrockets. Software based RAIDS don't cost that much, and usually are designed to use (or have to make by with) commodity disks.
+* __Principle__: Both have the same principle guiding them: splitting data among multiple disks to provide reliability, security and, sometimes, speed.
+* __Technology__: Hardware-based RAID systems work through a raid controller device, to whom disks attach to. Software RAIDs need nothing more than a regular disk controller device (included in **most** computers today, bare some SoC devices such as the Raspberry Pi) and special software (included or easily installed on most Linuxes) such as *mdadm*.
+* __Performance__: Hardware > Software, specially in more complicated configurations. On simpler configurations (RAID 0, 1), the performance hit can be negligible. Hardware controllers usually have cache memories that greatly improve small to medium loads performances, both on write and on read.
+* __Cost__: RAID Controllers can be QUITE expensive. And if faster drives are used (and hardware raid controllers tend to demand those, while at it), that cost skyrockets. Software based RAIDS don't cost that much, and usually are designed to use (or have to make by with) commodity disks.
 * __Scalability__: Storage units are an implementation of Hardware RAID that scale into the hundreds of disks. Software RAIDs won't (shouldn't) exceed the enclosure of the server that hosts them.
 * __Reliability__: Hardware RAID controllers that carry a cache memory include batteries to guarantee data consistency in case of a power failure. Software based RAIDs must rely on the filesystem's tools for that kind of reliability (a function Hardware RAIDs will also use, too)
+
+High cost, high stakes enterprise storage solutions tend to be all hardware-based RAID solutions.
+
+But old this is the classic way of looking at things: this definitions are likely to change slightly:
+
+For example, we just recently bought a pair of Dell EMC 7020 units: 250 disks on at least 3 different disks technologies (SSD, 7500 and 10000 RPM disks, SAS and NL-SAS), 6 slotted tiering, over a dozen expansion boxes, connected via 6/12Gb SAS cables. Redundant controllers, virtual ports for Fiber connectivity redundance, redundant SAS cable daisychaining between boxes, ... and a plethora of goods and options. A modern version of the classic standard enterprise storage solution.
+
+Now, for the surprise: As of its latest update (couple of months maybe), the unit performs it's RAID stripping and redundancy and spares on the block level, not on the disk level anymore, effectively setting its redundancy level lower, on 2MB partitions of the disks it is using (which kind of makes sense, once we understand the principles of wear and usage that modern SSD drives inherently have.)
+
+And for the software side of enterprise storage, CEPH is a seemingly strong contender to that (and it's FOSS, too!). While it forgoes the RAID technology, it embraces the principles of added redundancy on the *server* level. This time, the expendable device moves up from the disk to the whole server.
+Joining servers with storage well into the Petabyte range, it also scales up in performance, all of this with commodity hardware.
 
 ## 7) In a Perfect World, how should hardware resource management look like for you in modern DevOps Culture working environment?
 
@@ -74,11 +83,23 @@ I understand this question as in asking how the hardware the company owns will b
 
 In a Perfect World, "*friends don't let friends build Datacenters*."
 
-In the current DevOps Culture and dynamic demands of computing power and storage, a sane and rational use of the cloud providers is the way to go. The easiest management is the one that somebody else does for you.
+In the current DevOps Culture and, specially, with **higly changing/dynamic demands of compute and storage**, a sane and rational use of the cloud providers is the way to go. The easiest (hardware) management is the one somebody else does for you.
 
-Now, in a more real world, one where the GDPR exists, the scenario is different.
+Now, in a more real world, one where the GDPR exists, the scenario probably won't be as simple.
+
 The next best thing is, IMO, owning lean, clean and secure datacenters, and leverage software tools to automate everything that can be automated. And then some more.
-The cost on the human resources is higher. The alternative is to out-source which, again, not feasible on some cases.
+
+Managing hardware, as with all assets, comes at added costs:
+
+* Warranty and support contracts need to be tracked down and renewed.
+* Hardware is ~~likely~~ **surely** to be replaced on regular basis, anywhere from 2 to 5 years.
+* Human resources enter yet another spiral of learning, implementing, monitoring, buying its replacement, keeping up with what vendors offer
+* Support tends to be more expense than utility. Nevertheless, it's hard to go without it. Specially when assurance of operations is required regulatory entities.
+* Back up and Disaster Recovery gets **significantly** more difficult.
+
+There are software tools that would aid in this: ITOP comes to mind.
+
+The tax on the human resources is higher. The alternative is to out-source which, again, not feasible on some cases.
 
 ## 8) What does automation and Infrastructure as Code mean to you?
 
