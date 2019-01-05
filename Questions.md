@@ -113,54 +113,66 @@ Not long ago, Virtualization brought a series of real advantages over bare-metal
 
 Infrastructure as Code is, to me, expressing those principles in human-readable, machine procesable code, along with the use of specialized tools to create whole infrastructures out of it. 
 
-This **set of practices** opens up the operations trade to a whole new set of tools used by the developers, such as automated testing, versioning and collaboration; along with new ways of automation and scaling of the labor, shortening of the developing cycles, shortening of the time to deploy, etc.
+This **set of practices** opens up the operations trade to a whole new set of tools used by the developers since long time ago, such as automated testing, versioning and collaboration; along with new ways of automation and scaling of the labor, shortening of the developing cycles, shortening of the time to deploy, etc.
 
-### Criteria for a best practices
-There is a lot to read on the subject but this are the criteria that I gathered and stuck with me the most. Most of the best practices I've found (and remember right now) derive from this and thus it's the way I've summarized it:
+### Criteria for a best practices list
 
-* Everything must be automated. Cattle, not pets.
+There is a lot to read on the subject but following is the set of criteria that I've gathered and stuck with me the most. Most of the best practices I've found (and remember right now) derive from this core principles and thus it's the way I've summarized it:
 
-Automation comes at the hidden ~cost~ benefit of forcing the convergence of the artifacts used to the bare minimum. Less special cases allow to, as the saying goes, start treating servers as cattle, not as pets.
+###### Everything must be automated. Cattle, not pets.
+
+Automation comes at the hidden ~~cost~~ benefit of forcing the convergence of the artifacts used to homogeinity. Less special cases allow to, as the saying goes, start treating servers as cattle, not as pets. (The other way around holds, also, true: the more heterogenous an environment, the more special cases must be kept in mind and working together, with the added cost on management.)
+
 Automation helps remove the fear of commiting changes to production, because it also helps by (automatically!) testing those changes in test environments. Automation removes sources of human error.
 
-Automation brings continuous integration to the table, along with continuous delivery. Nice to have things that are increasingly pushing companies out of business.
+Automation brings continuous integration and delivery to the table. Once, nice to have things, but today increasingly pushing companies that don't adopt them out of business.
 
-* Tools need to accept automated input, have a command line interface. And they need to provide exits that can be chewed by other tools.
+###### Tools need to accept automated input, have a command line interface. And they need to provide exits that can be chewed by other tools.
 
 There are some ways to work around this limitation, but they are not pretty nor sustainable in time. Tools **must lend themselves to automation**, and this fact alone is enough to accept or reject a tool right from the start.
 
-* Code needs to be human-readable.
+###### Code needs to be human-readable.
 
 Human-readable code can be stored in code versioning. And tends to be self documenting.
-In that regard, YAML is better than JSON, but too much YAML is almost useless too.
 
-* Visibility.
+(In that regard, YAML is better than JSON, but too much YAML is almost useless too.)
 
-Artifacts need to fail fast and loudly (to the engineer developing them and monitoring team). Monitoring should help pinpoint the issue and a clear log of commits to the code versioning system will help find and revert the conflicting code or making a new fix. Clear versions for the configuration are nice too.
+###### Visibility.
 
-* Test infrastructures.
+Artifacts need to fail fast and loudly (to the engineer developing them and monitoring team, not to the consumer!). Monitoring should help pinpoint the issue and a clear log of commits to the code versioning system will help find and revert the conflicting code or making a new fix. Clear versions for the configuration are nice too.
+
+###### Test infrastructures.
 
 Having an automated infrastructure means it is easier than ever to spin up a new complete infrastructure (or a reduced version of it, to cut down on costs and time) to test the actual code to be deployed on a mock up, that can easily be destroyed upon completion.
 
-* Configuration drift vs Inmutable servers.
+###### Configuration drift vs Inmutable servers.
 
 One of the worst scenarios in the operations world is dealing with a legacy server no-one knows how to configure, let alone fix if broken. And to make matters worse, documentation tends to be missing too.
 It should be a practice to forbid the direct configuration of a server and, instead, make the appropiate changes in the code that creates it.
 Once this practice is embraced, we can even talk about *inmutable servers*, where configuration changes are simply not made to it, since it is quite easy to simply test the changes in a test environment, destroy the actual production server and replace it with a new one with the configuration change already set in place.
 
-* Technical debt and the cost of automation.
+###### Antifragility
 
-Borrowing from the developers world: Rewrite often. Commit often. Integrate all the time.
+This focus on automation proposes a shift in the classic perception of what the infrastructure should look like. We used to build for infrastructures that would not fail, ever. Yet, they do.
 
-Rewrite often, because it allows us to keep technical debt on check. Also: set time to rewriting (improving!) tasks, Commit often, because commiting leads to testing, which leads to production. Features reach sooner to the customer, bringing in more customers and money. Integrate all the time: avoid the high integration costs (and fear) that come from integrating too far apart in time.  
+This new way of thinking is more in the way of fixing them quicker, learning lessons from it, applying those lessons to all the other components, and building those commponents again, but this time, stronger.  
 
-The cost of automation: While it's nice to solve problems with the tools we can craft, like with any other piece of code, maintenance becomes an issue sooner or later. Every project must be evaluated with this in mind.
+
+###### Technical debt and the cost of automation.
+
+Borrowing from the developers world: *Rewrite often. Commit often. Integrate all the time.*
+
+Rewrite often, because it allows us to keep technical debt on check. Also: set time aside to rewriting (improving!) tasks, Commit often, because commiting leads to testing, which leads to production. Features reach sooner to the customer, bringing in more customers and money. Integrate all the time: avoid the high integration costs (and fear) that come from integrating too far apart in time. Always.be.shipping.
+
+The cost of automation: While it's nice to solve problems with the tools we can craft, like with any other piece of code, maintenance becomes an issue sooner or later. Every project must be evaluated with this in mind. And simple beats complex every time, so avoid the urge to reinvent the wheel.
 
 ### Advantages of IaC
-speed of delivery. Lessens costs.
-opens up to the posibility of offloading the infrastructure costs to providers.
-Dynamic response to load.
-Free (human) resources now can work on better tools, which in term are applied to the infrastructure, further improving the infrastructure.
+
+* Faster delivery, with less errors.
+* Opens up to the posibility of offloading the infrastructure costs of building and managing hardware to 3rd party providers. And moving away from one provider to another in days, not months.
+* Dynamic response to changes in load.
+* New environments for new ideas are spin up quicker. Shorter exploration cycles lead to better ideas are found and shipped faster.
+* Free (human) resources now can work on better tools, which in term are applied to the infrastructure, further improving the infrastructure.
 
 ### Tools
 
@@ -174,7 +186,7 @@ This section deserves a lot more explaining.
 
 The first choice will be VMs vs containers. Both are great tools but they don't solve exactly the same problem in the exact same manner, so I believe there's room for both in most scenarios and companies.
 
-On the virtualization side, VMware, XenServer and Proxmox/KVM are viable solutions, in order of commercial to open source status, support, IT HRs involvement and corporative track record. Bigger tools are emerging, more on the hyperconvergence side of the spectrum: VMware appears again, Nutanix, Openstack are a few names of weight.
+On the virtualization side, VMware, XenServer and Proxmox/KVM are viable solutions, in order of commercial to open source status, support, IT human resource involvement and corporate success track-record. Bigger tools are emerging, more on the hyperconvergence side of the spectrum: VMware appears again, Nutanix, Openstack are a few names of weight.
 
 On the containers side of the street, LXD and Docker dominate the market AFAIK, with special mention to Kubernetes as an orchestration solution.
 
@@ -182,7 +194,7 @@ At the end of the day, all this tools aim to solve a somewhat similar issue: put
 
 Another thing to consider is where and how to host those solutions. Companies with a sizable investion up-front can cost a datacenter (or 2 o 3), others will prefer to offset that cost to a hosted cloud solution on some major brand name's servers (Amazon's AWS, Google's GCP, Microsoft's Azure) or other smaller IaS providers (Digital Ocean comes to mind). IBM is coming to the fray too, with it's newly aquired Red Hat weaponry.
 
-Finally, I'd like to touch on yet another piece of future that is coming: Serverless compute on demand in the form of (the one I know) AWS's Lambda. In some scenarios, best value solution for processing.
+Finally, I'd like to touch on yet another piece of future that is coming: Serverless compute on-demand, in the form of (the one I know) AWS's Lambda. In some scenarios, a best-value solution for processing.
 
 * Image creation.
 
@@ -197,17 +209,22 @@ In the case of a container orchestration such as Docker, the Dockerfile already 
 Once the image is instantiated, it needs to be tailored to suit its final form and destination.
 
 The line that divides provisioning from the base image creation is thin and there is some overlap, but the tools are different. The old standards are Cheff and Puppet, and are likely to be the choice of older shops and more seasoned pros.
-The new contenders are Salt and Ansible. The latter, my provisioner of choice, beats somehow the rest by not needing an agent running on the host, which greatly easies its adoption. But at the same time, the only reason keeping more than one provisioning solution in use is the complexity of managing them and learning them. 
+
+The new contenders are Salt and Ansible. The latter, my provisioner of choice, beats somehow the rest by not needing an agent running on the host, which greatly eases its adoption. But at the same time, the only reason keeping more than one provisioning solution in use is the complexity of managing them and learning them.
+
+(In fact, Ansible works great to deploy agent-based solutions and offloading to them later.)
+
+One setback I already mentioned about Ansible before is it's push-based model, that can be offset somehow with ansible-pull (but I don't yet have experience on this).
 
 * Deployment
 
 IMHO the clearest winner in this category is Terraform, with Amazon's cloudformation at close second.
 
-Terraform is the tool that helps define IaC, by taking a text file as input and interacting with Artifact hosting solution of choice and creating the objects in that text file. VMs, Containers and networks, credentials and ACLs. And it can 'talk' to multiple cloud providers and hypervisors too.
+Terraform is a tool that helps define IaC, by taking a text file as input and interacting with the artifact (VM, container, the next thing that will come...) hosting solution of choice and creating the objects in that text file. VMs, Containers and networks, credentials and ACLs. One could get this sort of functionality by using the same provisioning tools already discussed, except for the fact that Terraform keeps an inner image of the state of the deployed infrastructure, which the others don't.
 
-The price to pay is a reduced tool set to play with, since some features will not be supported by all providers.
+And it can 'talk' to multiple cloud providers and hypervisors too. The price to pay is a reduced tool set to play with, since some features will not be supported by all providers.
 
-I'm calling cloudformation a close since I'm finding some sorts of support of the tool for OpenStack and KVM.  
+I'm calling cloudformation a close second, since lately I'm finding some sorts of support of the tool for OpenStack and KVM.  
 
 * Testing.
 
@@ -220,7 +237,7 @@ I was put in contact with Goss, as a tool for automated testing of infrastructur
 * Monitoring.
 
 Zabbix, Icinga, Nagios... lots of choices. My personal experience is with Zabbix, with some minor Grafana glitter put on top of its database.
-I think most of them are fine (IME), as long as they allow with some (but not so much) effort to introduce custom tests and detection for special situations.
+I think most of them are fine (IME), as long as they allow (with not too much) to introduce custom tests and detection for special situations.
 
 * CI/CD
 
@@ -230,14 +247,33 @@ This chapter is the one I'm missing the most. I know the idea is to automaticall
 
 Keeping track of a dynamic infrastructure can be quite a challenge, definitely not a thing for static tools.
 
-Basically: logs can not be hosted on the machine that produces them, if that server is not long for this world. They need to be collected, filtered and actioned on on a central service.
+Basically: logs can not be hosted on the machine that produces them any more, specially if that server is not long for this world. They need to be collected, filtered and actioned on on a central service.
+
 ELK and Splunk are 2 of the biggest solutions in the market right now, but there a lot more!
 
 * Load Balancing and service discovery.
 
 As I said earlier in the 5th question, HAProxy, Nginx. Consul.
 
-The need is services to be up, no matter the hosts that run them.
-"dejar de apuntar a servidores que no se caen y trabajar para aprender, arreglar y relanzar ágilmente."
+The need is for services to be up, no matter the hosts that run them.
 
 ### A day in the life of an IaC practitioner.
+
+Ok, let's say I get the job and get to the office on Monday. Cool!
+
+Naturally the tools would be different, I seem to recall you use Salt Stack, but the tale would be similar.
+
+A new requirement gets in the queue: to change the MySql minor version of the database servers.
+
+If the servers are hosted on Virtual Machines, I'd pull the latest changes from the repository for the Packer images from the company's inner Git server.
+Then look for the variables on the start of the file and change the version of the MySql package to install. Run Packer and upload it (hopefully automatically) to the test server. If they were containers, It would be a matter of changing the Dockerfile to the new version and moving on.
+
+If my co-workers on the Database team had already submitted the latest test database to the Git server, the new test machine would pull the repository and run some tests automatically. The rest of the code that is applied on top of the base image on the provisioning phase (Ansible, for instance) runs. If an automated tests detect a conflict or problem, I'd pull the virtual machine aside, figure out the way to solve the issue and modify the code (on the packer or on the provisioner) and re-try.
+
+Once that is solved, the pipeline (lets say, Jenkins) must be informed of the new version of the artifact that is available for new servers to be built.
+Then, I can set up a task to migrate the currently running servers to the latest version.
+
+There are multiple ways to deploy a change to production, but the ones I've read about lately are Green/Blue (alternate environment where you can switch users to on a moments notice, with the new version installed there) and Canary (similar, but with selected users being switched over). The application team would have a say on this. Anyway, it's time to tinker with the Terraform configuration files to spin up that infrastructure, and posibly with the service discovery tooling (Consul) to be aware of this changes and route application requests accordingly.
+
+All this tools have readable text as the source of configuration, which upon success is commited to the Git repositories.
+If anything goes wrong, a known working configuration for the whole is a *Git pull*, and a *Terraform apply* away.
