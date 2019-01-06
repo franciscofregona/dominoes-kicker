@@ -1,0 +1,22 @@
+test: (g=0): rw=randread, bs=4K-4K/4K-4K/4K-4K, ioengine=libaio, iodepth=64
+fio-2.16
+Starting 1 process
+test: Laying out IO file(s) (1 file(s) / 4096MB)
+
+test: (groupid=0, jobs=1): err= 0: pid=29873: Sun Jan  6 20:54:37 2019
+  read : io=3587.8MB, bw=130928KB/s, iops=32729, runt= 28060msec
+  cpu          : usr=2.08%, sys=83.05%, ctx=803457, majf=0, minf=1
+  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=0.1%, >=64=114.2%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.1%, >=64=0.0%
+     issued    : total=r=918397/w=0/d=0, short=r=0/w=0/d=0, drop=r=0/w=0/d=0
+     latency   : target=0, window=0, percentile=100.00%, depth=64
+
+Run status group 0 (all jobs):
+   READ: io=3587.8MB, aggrb=130928KB/s, minb=130928KB/s, maxb=130928KB/s, mint=28060msec, maxt=28060msec
+
+Disk stats (read/write):
+    drbd0: ios=1046542/10, merge=0/0, ticks=50020/1800, in_queue=51384, util=97.17%, aggrios=1048576/10, aggrmerge=0/0, aggrticks=0/0, aggrin_queue=0, aggrutil=0.00%
+    md0: ios=1048576/10, merge=0/0, ticks=0/0, in_queue=0, util=0.00%, aggrios=524288/6, aggrmerge=0/7, aggrticks=21678/402, aggrin_queue=21508, aggrutil=66.08%
+  sdb: ios=562926/6, merge=0/7, ticks=21716/540, in_queue=21452, util=65.21%
+  sdc: ios=485650/6, merge=0/7, ticks=21640/264, in_queue=21564, util=66.08%
