@@ -45,18 +45,17 @@ Vagrant.configure(2) do |config|
     # the path on the host to the actual folder. The second argument is
     # the path on the guest to mount the folder. And the optional third
     # argument is a set of non-required options.
-    # webServer1.vm.synced_folder "../data", "/vagrant_data"
-    # webServer1.vm.synced_folder "../../Recursos/Isos/us1804", "/iso", create: true
-    
+    webServer1.vm.synced_folder ".", "/vagrant", disabled: true
+  
     webServer1.ssh.forward_agent = true
     webServer1.ssh.port=2231
 
-    # webServer1.vm.provision "ansible" do |ansible|
-    #   ansible.inventory_path = "../../inventory/vagrant/hosts.yml"
-    #   ansible.playbook = "../../playbooks/provisionwebServer1.yml"
-    #   ansible.limit = "vagrantwebServer1"
-    #   ansible.config_file = "../../ansible.cfg"
-    # end #provision
+    webServer1.vm.provision "ansible" do |ansible|
+      ansible.inventory_path = "../../inventory/techtest/hostsDev.yml"
+      ansible.playbook = "../../playbooks/ProvisionWebServer.yml"
+      ansible.limit = "DWeb1"
+      ansible.config_file = "../../ansible.cfg"
+    end #provision
     
     # Provider-specific configuration so you can fine-tune various
     # backing providers for Vagrant. These expose provider-specific options.
@@ -103,18 +102,18 @@ Vagrant.configure(2) do |config|
     # the path on the host to the actual folder. The second argument is
     # the path on the guest to mount the folder. And the optional third
     # argument is a set of non-required options.
-    # webServer2.vm.synced_folder "../data", "/vagrant_data"
-    # webServer2.vm.synced_folder "../../Recursos/Isos/us1804", "/iso", create: true
-    
+    webServer2.vm.synced_folder ".", "/vagrant", disabled: true
+        
     webServer2.ssh.forward_agent = true
     webServer2.ssh.port=2232
 
-    # webServer2.vm.provision "ansible" do |ansible|
-    #   ansible.inventory_path = "../../inventory/vagrant/hosts.yml"
-    #   ansible.playbook = "../../playbooks/provisionwebServer2.yml"
-    #   ansible.limit = "vagrantwebServer2"
-    #   ansible.config_file = "../../ansible.cfg"
-    # end #provision
+    webServer2.vm.provision "ansible" do |ansible|
+      ansible.inventory_path = "../../inventory/techtest/hostsDev.yml"
+      ansible.playbook = "../../playbooks/ProvisionWebServer.yml"
+      ansible.limit = "DWeb2"
+      ansible.config_file = "../../ansible.cfg"
+
+    end #provision
     
     # Provider-specific configuration so you can fine-tune various
     # backing providers for Vagrant. These expose provider-specific options.

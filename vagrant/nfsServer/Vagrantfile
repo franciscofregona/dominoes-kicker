@@ -44,8 +44,7 @@ Vagrant.configure(2) do |config|
     # the path on the host to the actual folder. The second argument is
     # the path on the guest to mount the folder. And the optional third
     # argument is a set of non-required options.
-    # nfsServer1.vm.synced_folder "../data", "/vagrant_data"
-    # nfsServer1.vm.synced_folder "../../Recursos/Isos/us1804", "/iso", create: true
+    nfsServer1.vm.synced_folder ".", "/vagrant", disabled: true
     
     nfsServer1.ssh.forward_agent = true
     nfsServer1.ssh.port=2221
@@ -118,8 +117,7 @@ Vagrant.configure(2) do |config|
     # the path on the host to the actual folder. The second argument is
     # the path on the guest to mount the folder. And the optional third
     # argument is a set of non-required options.
-    # nfsServer2.vm.synced_folder "../data", "/vagrant_data"
-    # nfsServer2.vm.synced_folder "../../Recursos/Isos/us1804", "/iso", create: true
+    nfsServer2.vm.synced_folder ".", "/vagrant", disabled: true
     
     nfsServer2.ssh.forward_agent = true
     nfsServer2.ssh.port=2222
