@@ -4,6 +4,7 @@
 
   roles:
     - ../roles/hosts
+    - ../roles/tools
     - ../roles/ansible-softwareraid
     - ../roles/drbd
     - ../roles/nfs

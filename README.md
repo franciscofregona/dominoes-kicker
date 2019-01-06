@@ -32,6 +32,31 @@ The other downside of using the haresources method is that in its simplicity and
 * the NFS shares would simply not stay up, and the exports would not auto-publish on server startup or HA transfer. I solved it by creating my own ha manage service script, **exportffs**; in a way expanding Heartbeat's capabilities =).
 * the same happened with the docker start up and teardown of the container, for which I scripted the **dockermon** resource (shell) script.
 
+## Additional tools to install
+
+A basic set of tools to install on any server must be
+
+* minimal, and in a clear contradiction
+* complete.
+
+We need it to be minimal in order to avoid opening any possibility for an attacker to gain access, keeping disks lean, libraries installed (besides what the server needs to serve its purpose) to the minimum and the least impact on the memory and cpu possible.
+
+At the same time, if anything goes wrong, it's the worst time to try to install tools that were not there before: we might need to keep the disk untouched (ie: deleted files or partitions), libraries that could conflict with the service the server gives, the parts in place to perform the installations could not work...
+
+So, by definition, every list is wrong, but here's an attempt:
+
+* Openssh-server and Fail2ban
+* netstat
+* iftop
+* tcpdump
+* iotop
+* htop
+* saidar
+* atop
+* and (maybe) a firewall
+
+Frankly, I haven't used this tools (except for tcpdump and the iptables firewall) in many years or at all, so won't comment on how good they are; suffice to say they are in use in the infrastructure I work with, over a sizeable number of machines and services, and has worked well enough for years.
+
 ## Testing
 
 In our previous interview I mentioned I had done some testing for infrastructure and Ansible with the aid of a tool I could not remember the name of. That tool is Goss, and it is what I used here.

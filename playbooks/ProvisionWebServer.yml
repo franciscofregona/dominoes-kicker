@@ -4,6 +4,7 @@
 
   roles:
     - ../roles/hosts
+    - ../roles/tools
     - ../roles/nfsClient
     - ../roles/pip
     - ../roles/docker
