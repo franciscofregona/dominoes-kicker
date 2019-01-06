@@ -1,23 +1,23 @@
 # todo:
 
-* TODO: not using vagrants sync folders. See if I can disable it.
+* TODO: DRBD Role should find out if it needs to run tasks for HA before failing and ignoring it.
 * TODO: Give a final pass to the roles documentation (I added some things since writing those).
 * TODO: Install extra tools on the servers.
-* TODO: HA's haresources would'nt detect downed services and autoswitch. Migrate to Pacemaker.
+* TODO: HA's haresources would'nt detect downed services and autoswitch. Migrate from "haresources" to Pacemaker.
 * TEST: When bringing up the nfs servers from sleep and are already provisioned, do they still reach a stalemate?
-* TODO: WEB: Make the Tests for the web servers. And test them.
-* TODO: Register the exits of the tests and output them (both NFS and WEB servers)
 * TODO: HA: make a script that tests status of the HA service on the host quickly without that much typing.
 * TODO: Docker probably will be running as root...? This should be changed for prod.
-* TODO: Performance on web servers. Change volume for to a bind mount as per https://docs.docker.com/storage/volumes/
+* WONT FIX: ~~Performance on web servers. Change volume for to a bind mount as per https://docs.docker.com/storage/volumes/~~ Read times are good (probably because of caching)
 * TODO: NFS Test play must delete the directory before populating or running tests.
-* TODO: NFS Fill play too must delete the contents of the directory.
-* TODO: It'be nice to check beforehand too.
+* DONE: ~~NFS Fill play too must delete the contents of the directory.~~
 * TODO: Add the ansible-galaxy install command to the localdownload Play.
 * TODO: DOC: resources are mostly mounted up by HA.
 * TODO: Delete tests directories from roles if are not going to be used.
 * TODO: Study the (nice!) make and Makefile structure of the ansible-softwareraid role.
 * TODO: Vagrant: web servers: Add a production network.
+* DONE: ~~Register the exits of the tests and output them (both NFS and WEB servers)~~ Goss module does that.
+* DONE: ~~WEB: Make the Tests for the web servers. And test them.~~
+* DONE: ~~not using vagrants sync folders. See if I can disable it.~~
 * WONT FIX: ~~TODO: VAGRANT: NFS change NIC type.~~ [Not a problem](https://github.com/hashicorp/vagrant/issues/10481#issuecomment-445074331).
 * WONT FIX: ~~TODO: If NFS HA keeps failing, check for a quorum device in host for guests to share with.~~ (Unless Pacemaker requires it)
 * DONE: ~~WEB docker monitor for HA: It will be nice to actually take care of the service also~~. Made **dockermon**
