@@ -52,7 +52,7 @@ Vagrant.configure(2) do |config|
     nfsServer1.vm.provision "ansible" do |ansible|
       ansible.inventory_path = "../../inventory/techtest/hostsDev.yml"
       ansible.playbook = "../../playbooks/ProvisionNFSServer.yml"
-      ansible.limit = "DNfsServer1"
+      ansible.limit = "nfsServer1"
       ansible.config_file = "../../ansible.cfg"
     end #provision
     
@@ -125,7 +125,7 @@ Vagrant.configure(2) do |config|
     nfsServer2.vm.provision "ansible" do |ansible|
       ansible.inventory_path = "../../inventory/techtest/hostsDev.yml"
       ansible.playbook = "../../playbooks/ProvisionNFSServer.yml"
-      ansible.limit = "DNfsServer2"
+      ansible.limit = "nfsServer2"
       ansible.config_file = "../../ansible.cfg"
     end #provision
     
