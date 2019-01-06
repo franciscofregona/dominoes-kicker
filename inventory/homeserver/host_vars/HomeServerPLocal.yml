@@ -3,11 +3,11 @@
 #########  Ansible connection towards the LOCAL machine  ###########
 ansible_connection: local
 ansible_become_method: "sudo"
+ansible_become: "yes"
 
 
 
 # ansible_ssh_host: 127.0.0.1
-# ansible_become: "yes"
 ##ansible_become_user: "root"
 # ansible_become_password: ""
 #ansible_ssh_user: admin
