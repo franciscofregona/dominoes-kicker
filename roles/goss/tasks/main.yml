@@ -16,6 +16,13 @@
     dest: /etc/mygoss.yaml
   tags: goss
 
+#This task is not tagged, as we want it to run from provisioning.
+#If we want to run tests manually, there's no need for it.
+- name: Goss. Pause for 20 seconds to wait for HA.
+  pause:
+    seconds: 25
+    prompt: "Waiting for the HA service to pop up. Otherwise the tests will fail."
+
 - name: Goss. Run the tests
   goss:
     path: /etc/mygoss.yaml
