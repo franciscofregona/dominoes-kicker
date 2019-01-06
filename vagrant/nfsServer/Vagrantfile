@@ -3,7 +3,7 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 
-diskSize = 1    #Size in Gigabytes (2 per server, so times 4 consumption)
+diskSize = 50    #Size in Gigabytes (2 per server, so times 4 consumption)
 ramSize = 512   #Memory for the VMs (2 servers, so times 2 consumption)
 cpuCount = 1    #No. of CPUs for the VMs (again... 2 servers...)
 
