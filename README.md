@@ -143,7 +143,7 @@ Once the host has been set up properly, adjusting its configuration and further 
 
 The virtual machines are set up with vagrant, and I include the Ansible playbooks as means of provisioning them from within the same Vagrant file. So in order to get a test infrastructure with all I was asked to provide we only need to vagrant up those servers.
 
-Get the latest version of this repo:
+###### Get the latest version of this repo:
 
 ```bash
 git clone https://github.com/franciscofregona/dominoes-kicker.git
@@ -157,7 +157,9 @@ cd into the repo folder (you must be seing this file along with Questions.md).
 cd dominoes-kicker
 ```
 
-Set up the control host with (again, already done)
+(I renamed this folder to TechnicalTest on the provided server)
+
+###### Set up the control host with (again, already done)
 
 ```bash
 ansible-playbook playbooks/localDownload.yml
@@ -165,14 +167,17 @@ ansible-galaxy install -r requirements.yml
 ansible-playbook playbooks/ProvisionHomeServer.yml -i inventory/homeserver/hostsProd.yml -l PHomeServer -K
 ```
 
-Deploy the nfs servers
+(If instead we want to run it against itself, use 
+ansible-playbook playbooks/ProvisionHomeServer.yml -i inventory/homeserver/hostsProd.yml -l **HomeServerPLocal** -K)
+
+###### Deploy the nfs servers with:
 
 ```bash
 cd vagrant/nfsServers
 vagrant up
 ```
 
-The servers automatically pop up and provision themselves with the contents of the ProvisionNFSServer.yml playbook. They should be running in a short while (7 minutes or so) and in a High Availability configuration.
+The servers automatically pop up and provision themselves with the contents of the ProvisionNFSServer.yml playbook. They should be running in a short while (4 minutes or so) and in a High Availability configuration.
 
 The last task executed by the provisioner is the run for the tests. If at any point we want to re run those tests, we can simply **cd back to the root directory of the repo** and run:
 
@@ -180,16 +185,16 @@ The last task executed by the provisioner is the run for the tests. If at any po
 ansible-playbook playbook/ProvisionNFSServer --tags goss
 ```
 
-If we want to run a benchmark test, **cd back to the root directory of the repo** and run:
+###### To run a benchmark test, **cd back to the root directory of the repo** and run:
 
 ```bash
 cd ../..
-ansible-playbook TestNFSServer.yml
+ansible-playbook playbooks/TestNFSServer.yml
 ```
 
 A file with the results, timestamped, will popup in the *testResults* directory.
 
-Then, to launch the web servers:
+###### Launch the web servers:
 
 ```bash
 cd vagrant/webServers
