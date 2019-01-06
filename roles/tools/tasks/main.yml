@@ -1,0 +1,10 @@
+---
+# tasks file for tools
+# 
+- name: Tools. Install additional Tools.
+  apt:
+    name: ['atop','fail2ban','htop','iftop','iotop','net-tools','saidar','tcpdump'] 
+    update_cache: yes
+    cache_valid_time: 3600
+    state: present
+  tags: tools
