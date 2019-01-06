@@ -68,7 +68,8 @@ I still don't know how to test the speed of access from the web servers end of t
 
 1. Find the answer to the questions in the Questions.md file.
 2. The NFS servers will pop up in their own virtual machines by running the *vagrant up* command on the vagrant/nfsServer directory.
-3. In the same line, the WEB servers will start once
+3. In the same line, the WEB servers will start after another *vagrant up* on the vagrant/webServer directory.
+
 # The Ansible approach
 
 Ansible is basically an ssh wrapper. It allows us to hit any server via ssh, and leverage the server's Python installation (and it can be installed with some special provisioning) to create complex configurations. The most prominent "downside" of Ansible is that it embodies a *push* model, but provisions can be made to use a *pull* mode.
@@ -119,7 +120,7 @@ This YAML text is, then, code, which can easily represent Infrastructure state, 
 Since I'm developing from a PC to a host you provided, I automated the configuration of that too.
 Ansible needs only ssh access and a python interpreter on the target host, so the first run of configuration (installing Ansible, so it can itself hit on the virtual machines locally, vagrant and virtualbox to set up those machines) I'll do it from my PC with an ansible-playbook command (see below).
 
-Further configurations to the control host can be made either way: remotely (from my machine to the control host), or leveraging the now installed Ansible client, locally from the control host onto itself (with a specially crafted inventory file, HomeServerPLocal.yml, defining the ansible_connection variable to "local".)
+Further configurations to the control host can be made either way: remotely (from my machine to the control host), or leveraging the now installed Ansible client, locally from the control host onto itself (with a specially crafted inventory file, HomeServerPLocal.yml, defining the ansible_connection variable to "local"), and getting the latest revision of my code with a **git pull**.
 
 The host can be "pinged" to check for connectivity (in the Ansible "way" of pinging) then, either with
 
@@ -173,20 +174,20 @@ vagrant up
 
 The servers automatically pop up and provision themselves with the contents of the ProvisionNFSServer.yml playbook. They should be running in a short while (7 minutes or so) and in a High Availability configuration.
 
-If you want to run a benchmark test, cd back to the root directory of the repo and run:
+The last task executed by the provisioner is the run for the tests. If at any point we want to re run those tests, we can simply **cd back to the root directory of the repo** and run:
+
+```bash
+ansible-playbook playbook/ProvisionNFSServer --tags goss
+```
+
+If we want to run a benchmark test, **cd back to the root directory of the repo** and run:
 
 ```bash
 cd ../..
-ansible-playbook TestNFSServer.yml -i inventory/techtest/hostsProd.yml
+ansible-playbook TestNFSServer.yml
 ```
 
 A file with the results, timestamped, will popup in the *testResults* directory.
-
-If instead you want to populate the server with some files for the web servers to have something to serve (again, cd into the main repo directory if needed) and execute:
-
-```bash
-ansible-playbook PopulateNFSServer.yml -i inventory/techtest/hostsProd.yml
-```
 
 Then, to launch the web servers:
 
@@ -196,8 +197,11 @@ vagrant up
 ```
 
 The servers launch and self provision with the instructions set in the ProvisionWebServer.yml playbook.
+Through the magic of port redirections, webServer1's dockerized apache port is redirected to the virtual machine's 8080 port, in turn redirected to the Home Server's 8081 port. The same thing it's done with the dockerized apache on webServer2, that ends up on the Home Server's 8082 port.
 
-I have not done any benchmarking on the web servers yet.
+So, in order to find the web page we can simply *wget localhost:8081* (or *8082*).
+
+The benchmarking tests I run are documented on the *web benchmarking.md* file.
 
 # Some of the links I used as reference.
 
